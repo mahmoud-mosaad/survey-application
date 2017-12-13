@@ -1,0 +1,80 @@
+.block
+{
+    display: block;
+}
+
+/*.Sign_In_Form
+{
+    margin: 15% auto;
+    width: 25%;
+    padding: 20px 20px 20px 20px;
+    box-shadow: 0px 0px 22px 6px #DDDDDD;
+    overflow: hidden;
+}*/
+
+
+.Sign_In_Form
+{
+    margin: 5% auto;
+    padding: 0px 20px 0px 20px;
+  
+}
+
+.Sign_In_Form-all
+{
+    margin: 11% auto;
+    width: 25%;
+    box-shadow: 0px 0px 22px 6px #DDDDDD;
+    overflow: hidden;
+    border-radius: 17px 17px 0px 0px;
+}
+
+.Sign_Up_Button
+{
+    float: right;
+    width: 30%;
+    border-radius: 0;
+}
+
+.Sign_In_Button
+{
+    width: 70%;
+    border-radius: 0;
+}
+
+.clear
+{
+    clear: both;
+}
+
+legend {
+    background: url(http://www.placehold.it/70) no-repeat;
+    height: 70px;
+}
+
+
+.error
+{
+    color: red;
+    display: none;
+}
+
+.hidden
+{
+    display: none;
+}
+
+.show
+{
+    display: block;
+}
+
+.clear
+{
+    clear: both;
+}
+
+.margin
+{
+    margin: 5px;
+}

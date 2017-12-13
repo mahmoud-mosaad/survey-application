@@ -1,0 +1,113 @@
+#Surevy_Form
+{
+    margin-top: 2%
+}
+
+.Add_Surevy_Form1
+{
+    padding-top: 10px;
+    margin: 2% auto 2% auto;
+    width: 80%;
+    box-shadow: 0px 0px 22px 6px #DDDDDD;
+    overflow: hidden;
+    max-height: 225px;
+}
+
+.Add_Surevy_Form2
+{
+    margin: 2% auto;
+    width: 80%;
+    box-shadow: 0px 0px 22px 6px #DDDDDD;
+    overflow: hidden;
+}
+
+.survey-questions-buttons-div
+{
+    margin: 0px;
+    padding: 0px;
+}
+
+.survey-questions-buttons
+{
+    border-radius: 0px;
+    width: 100%;
+}
+
+.add-survey-body
+{
+    padding: 10px;
+    max-height: 600px;
+    overflow-y: scroll;
+    min-height: 140px;
+}
+
+.left-side
+{
+    margin: 4px 0px;
+}
+
+.right-side
+{
+    margin: 4px 0px;
+}
+
+.no-box-shadow
+{
+    box-shadow: none;
+}
+
+.free-answer-textarea
+{
+    margin: 7px 0px;
+}
+
+.right-float
+{
+    float: right;
+}
+
+.clear
+{
+    clear: both;
+}
+
+#survey-submit-button,
+#survey-cancel-button
+{
+    margin: 3px 2px;
+    border-radius: 0px;
+    box-shadow: none;
+}
+
+.margin-7
+{
+    margin: 7px 0px;
+}
+
+.margin-3
+{
+    margin: 3px 0px;
+}
+.cursor-pointer
+{
+    cursor:pointer;
+}
+
+.margin-button-20
+{
+    margin-bottom:20px 
+}
+
+.checkbox-background
+{
+    background-color: #007bff;
+}
+
+.radiobutton-background
+{
+    background-color: #868e96;
+}
+
+textarea {
+    resize: none;
+}

@@ -1,0 +1,47 @@
+.block
+{
+    display: block;
+}
+
+.Sign_Up_Form
+{
+    margin: 10% auto;
+    width: 25%;
+    padding: 20px;
+    box-shadow: 0px 0px 22px 6px #DDDDDD;
+    overflow: hidden;
+}
+
+.Sign_Up_Button
+{
+    float: right;
+    border-radius: 0px;
+    width: 70%;
+}
+
+.Sign_In_Button
+{
+    /*float: right;*/
+    border-radius: 0px;
+    width: 30%;
+}
+
+.clear
+{
+    clear: both;
+}
+
+legend {
+  background: url(http://www.placehold.it/70) no-repeat;
+  height: 70px;
+}
+
+.col{
+    background-color: red
+}
+
+.error
+{
+    color: red;
+    display: none;
+}

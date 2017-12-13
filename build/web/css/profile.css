@@ -1,0 +1,56 @@
+.navbar-light .navbar-nav .active > .nav-link
+{
+    color: #007bff; 
+}
+
+.block
+{
+    display: block;
+}
+
+.msg-box
+{
+    padding-top: 10px;
+    margin: 2% auto 2% auto;
+    width: 80%;
+    box-shadow: 0px 0px 22px 6px #DDDDDD;
+    overflow: hidden;
+    max-height: 455px;
+}
+
+.Sign_Up_Form
+{
+    margin: 7% auto;
+    width: 30%;
+    padding: 15px;
+    box-shadow: 0px 0px 22px 6px #DDDDDD;
+    overflow: hidden;
+    border-radius: 5px;
+}
+
+.Sign_Up_Button
+{
+    float: right;
+    
+}
+
+.clear
+{
+    clear: both;
+}
+
+.col{
+    background-color: red
+}
+
+.error
+{
+    color: red;
+    display: none;
+}
+
+.sign-out-button
+{
+    border-radius: 0px;
+    cursor: pointer;
+}

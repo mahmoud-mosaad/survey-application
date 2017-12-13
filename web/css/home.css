@@ -1,0 +1,54 @@
+.navbar-light .navbar-nav .active > .nav-link
+{
+    color: #007bff; 
+}
+
+.posts .row
+{
+    margin-top: 7px;
+    margin-bottom: 5px;
+}
+
+#homePostImage
+{
+    height: 144px;
+    width: 256px;
+}
+
+#homePostDesc
+{
+    padding: 0px 7px;
+    line-height: 1.4;
+}
+
+#homePostFeatures
+{
+    padding: 0px 10px;
+}
+
+.card-header{
+    text-align: center;
+}
+
+.custome-card-columns
+{
+    margin: 15px 0px;
+}
+
+#border-raduis-0{
+    border-radius: 0px
+}
+
+#radioInput
+{
+    display: inline;
+    margin: 2px 0px;
+}
+
+#border-raduis-0,
+#border-raduis-0,
+.sign-out-button
+{
+    border-radius: 0px;
+    cursor: pointer;
+}

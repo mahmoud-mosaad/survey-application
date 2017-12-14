@@ -123,6 +123,29 @@ public class SurveyCounter {
     }
     
     
+    public SurveyCounter getSingleSubmitedSurveysCount(String surveyID) {
+        SurveyCounter sc = new SurveyCounter();
+        try {
+            Class.forName(CONNECT_STRING);
+            Connection conn = DriverManager.getConnection(this.URL, this.USER, this.PASS);
+            Statement stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT surveyID, count(userID) as Count FROM " + TABLE_NAME + " where surveyID="+x(surveyID)+ " group by surveyID" );
+            while (rs.next()) {
+                sc.setSurevyID(rs.getString("surveyID"));
+                sc.setSubmitedSurveyCount(rs.getInt("Count"));
+            }
+             rs.close();
+            stmt.close();
+            conn.close();
+        } catch (Exception e) {
+            System.err.println("-------------------------------------");
+            System.err.println("error in retrivnig submited suveys count   " + e);
+            System.err.println("-------------------------------------");
+        }
+        return sc;
+    }
+    
+    
     
     
 }

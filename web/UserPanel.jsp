@@ -66,15 +66,16 @@
             <%
                 SurveyCounter sc = new SurveyCounter();
                 Survey s = new Survey();
-                ArrayList<SurveyCounter> surveyCounters = new ArrayList<SurveyCounter>();
+//                ArrayList<SurveyCounter> surveyCounters = new ArrayList<SurveyCounter>();
                 ArrayList<Survey> surveys = new ArrayList<Survey>();
                 surveys = s.getSurveys();
-                surveyCounters = sc.getSubmitedSpamedSurveysByCount(currentUser.getId());
+//                surveyCounters = sc.getSubmitedSpamedSurveysByCount(currentUser.getId());
                 for(int i=0 ; i<surveys.size() ; i++)
                 {
                     if(surveys.get(i).getUserID().equals(currentUser.getId()))
                     {
-                
+                        sc = sc.getSingleSubmitedSurveysCount(surveys.get(i).getId());
+                        
             %>
 
             <div class="card">
@@ -83,6 +84,11 @@
                         <a data-toggle="collapse" href="#collapseOne-<%=i%>" aria-expanded="true" aria-controls="collapseOne">
                             <%= surveys.get(i).getName()%>
                         </a>
+                        <span class="float-right">
+                            
+                            <%= sc.getSubmitedSurveyCount()%>
+                            
+                        </span>
                     </h5>
 
 

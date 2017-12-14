@@ -58,7 +58,7 @@
                         <%
                             String path;
                             if (currentUser.getType() == 0) {
-                                path = "#";
+                                path = "UserPanel.jsp";
                             } else {
                                 path = "AdminPage.jsp";
                             }

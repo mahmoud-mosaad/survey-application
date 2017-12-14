@@ -17,14 +17,12 @@ import javax.servlet.http.HttpSession;
 @WebServlet(name = "SignIn", urlPatterns = {"/SignIn"})
 public class SignIn extends HttpServlet {
 
-    private String encryptPassword(String password) {
+   private String encryptPassword(String password) {
         MessageDigest md;
         String encrypted = "";
         try {
             md = MessageDigest.getInstance("SHA-256");
-
             md.update(password.getBytes());
-
             byte byteData[] = md.digest();
 
             StringBuffer sb = new StringBuffer();
@@ -33,7 +31,7 @@ public class SignIn extends HttpServlet {
                 encrypted = sb.toString();
             }
         } catch (NoSuchAlgorithmException ex) {
-            Logger.getLogger(UserValidation.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(SignUp.class.getName()).log(Level.SEVERE, null, ex);
         }
         return encrypted;
     }
@@ -56,7 +54,7 @@ public class SignIn extends HttpServlet {
             if (user.getEmail().equals(userEmail) && user.getPassword().equals(userPassword)) {
                 HttpSession session = request.getSession(true);
                 session.setAttribute("currentUser", user);
-                session.setMaxInactiveInterval(60*60);
+//                session.setMaxInactiveInterval(60*60);
                 user.changeState(userEmail, 1);
                 response.sendRedirect("HomePage.jsp");
 

@@ -1,27 +1,10 @@
-<%@page import="Model.Spam"%>
-<%@page import="Model.User"%>
 <%@page import="Model.Answer"%>
-<%@page import="java.util.ArrayList"%>
 <%@page import="Model.Question"%>
+<%@page import="Model.Spam"%>
+<%@page import="java.util.ArrayList"%>
 <%@page import="Model.Survey"%>
-<%@page contentType='text/html' pageEncoding='UTF-8'%>
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
-
-<%
-    session = request.getSession(false);
-    if (session.getAttribute("currentUser") == null) {
-        response.sendRedirect("SignIn.jsp");
-    } else {
-
-        User currentUser = new User();
-        currentUser = (User) session.getAttribute("currentUser");
-        if (currentUser.isSuspended() == 1) {
-            response.sendRedirect("SignOut");
-        }
-
-
-%>
-
 <html>
     <head>
         <meta http-equiv='Content-Type' content='text/html; charset=UTF-8'>
@@ -29,113 +12,20 @@
         <link rel='stylesheet' href='css\bootstrap.min.css'/>
         <link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css'/>
         <link rel='stylesheet' href='css\home.css'/>
-        <title>Home</title>
+        <title>JSP Page</title>
     </head>
-
-
-
     <body>
-
-
-        <%            Spam spam1 = new Spam();
-            ArrayList<Spam> spamSurveys = new ArrayList<Spam>();
-            spamSurveys = spam1.getSpamedSurveysByCount();
-        %>
-
-        <!-- Start of Nav Bar -->
-        <nav class='navbar navbar-expand-lg navbar-light bg-light'>
-            <a class='navbar-brand logo' href='#'>HI, <%= currentUser.getName()%></a>
-            <button class='navbar-toggler' type='button' data-toggle='collapse' data-target='#collapsedNav' aria-controls='navbarSupportedContent' aria-expanded='false' aria-label='Toggle navigation'>
-                <span class='navbar-toggler-icon'></span>
-            </button>
-
-            <div class='collapse navbar-collapse' id='collapsedNav'>
-                <ul class='navbar-nav mr-auto'>
-
-                    <li class='nav-item active'>
-                        <a class='nav-link' href='HomePage.jsp'>Home</a>
-                    </li>
-
-                    <li class='nav-item'>
-                        <a class='nav-link' data-toggle="tooltip" title="Profile" href='Profile.jsp'>Profile</a>
-                    </li>
-
-                    <li class='nav-item'>
-                        <%
-                            String path;
-                            if (currentUser.getType() == 0) {
-                                path = "UserPanel.jsp";
-                            } else {
-                                path = "AdminPage.jsp";
-                            }
-                        %>
-                        <a class='nav-link' data-toggle="tooltip" title="my Panel" href='<%= path%>'>My Panel</a>
-                    </li>
-
-                    <%
-                        if (currentUser.getType() == 1) {
-                    %>
-                    <li class='nav-item dropdown'>
-                        <a class='nav-link dropdown-toggle' href='#' id='navbarDropdown' role='button' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'>
-                            Notifications
-                        </a>
-                        <div class='dropdown-menu' aria-labelledby='navbarDropdown' style="width: 238px;">
-                            <table>
-
-                                <tr style="text-align: center;">
-                                    <th>survey Name</th>
-                                    <th>spam count</th>
-                                </tr>
-
-                                <%
-                                    for (int ii = 0; ii < spamSurveys.size(); ii++) {
-                                        Survey survey = new Survey();
-                                        survey = survey.getSurvey(spamSurveys.get(ii).getSurveyID());
-                                %>
-
-                                <tr>
-                                    <th><a class='dropdown-item' data-surveyid="<%= spamSurveys.get(ii).getSurveyID()%>" href='#'><%= survey.getName()%></a></th>
-                                    <th style="text-align: center;"><%= spamSurveys.get(ii).getSpamCount()%></th>
-                                </tr>
-
-
-                                <%}%>
-
-                            </table>
-                        </div>
-                    </li>
-                    <%}%>
-
-                </ul>
-
-                <%
-                    if (currentUser.isSuspended() == 0) {
-                %>
-                <button style="box-shadow:none;" class='btn btn-light my-2 my-sm-0 add-survey' onclick="location.href = 'AddSurvey.jsp';" id='border-raduis-0' type='button'>ADD SUREVEY</button>
-                <%}%>
-
-                <form action="SignOut" method="POST">
-                    <input class="btn btn-outline-secondary sign-out-button" style="box-shadow:none;" type="submit" value="Sign-Out">
-                </form>
-            </div>
-        </nav>
-
-        <!--End of Nav Bar-->
-
-        <!--Start of Home Body-->
-
-        <div class="posts">
-            <div class="container-fluid">
-                
-                
-                
-                <div class="card-columns custome-card-columns">
+        <div class="card-columns custome-card-columns">
                     <%
                         Survey survey = new Survey();
                         Spam spam = new Spam();
                         ArrayList<Survey> surveys = new ArrayList<Survey>();
                         ArrayList<Spam> spammedSurveys = new ArrayList<Spam>();
-                        surveys = survey.getSurveys();
+                        survey.setId("e6763929a7c44a529438f4a673903d40");
+//                        survey.setName("min");
+                        survey.setUserID("8440c64388c04686b37d13650419da32");
+//                        survey.setSuspend(0);
+                        surveys.add(survey);
                         spammedSurveys = spam.getSpamedSurveys();
 
                         for (int i = 0; i < surveys.size(); i++) {
@@ -227,19 +117,19 @@
                                         <div class="modal-footer">
 
                                             <%
-                                                if (!surveys.get(i).getUserID().equals(currentUser.getId())) {
+                                                if (!surveys.get(i).getUserID().equals("")) {
                                                     if (spammedSurveys.size() > 0) {
                                                         for (int j = 0; j < spammedSurveys.size(); j++) {
-                                                            if (!spammedSurveys.get(j).getUserID().equals(currentUser.getId())) {
+                                                            if (!spammedSurveys.get(j).getUserID().equals("")) {
 
 
                                             %>
 
-                                            <button type="button" class="btn btn-danger" data-surveyid="<%= surveys.get(i).getId()%>" data-userid="<%= currentUser.getId()%>" id="spam-survey-button-<%= i%>" onclick="spam('<%= i%>')" style="cursor: pointer; box-shadow: none;">Spam!</button>
+                                            <button type="button" class="btn btn-danger" data-surveyid="<%= surveys.get(i).getId()%>"  id="spam-survey-button-<%= i%>" onclick="spam('<%= i%>')" style="cursor: pointer; box-shadow: none;">Spam!</button>
                                             <%}
                                                 }
                                             } else {%>
-                                            <button type="button" class="btn btn-danger" data-surveyid="<%= surveys.get(i).getId()%>" data-userid="<%= currentUser.getId()%>" id="spam-survey-button-<%= i%>" onclick="spam('<%= i%>')" style="cursor: pointer; box-shadow: none;">Spam!</button>
+                                            <button type="button" class="btn btn-danger" data-surveyid="<%= surveys.get(i).getId()%>"  id="spam-survey-button-<%= i%>" onclick="spam('<%= i%>')" style="cursor: pointer; box-shadow: none;">Spam!</button>
                                             <%
 
                                                     }
@@ -258,7 +148,7 @@
 
 
                                             <%
-                                                if ((surveys.get(i).getUserID().equals(currentUser.getId())) || (currentUser.getType() == 1)) {
+                                                if ((surveys.get(i).getUserID().equals(""))) {
                                             %>
                                             <button type="button" class="btn btn-danger" data-surveyid="<%= surveys.get(i).getId()%>" id="suspend-survey-button-<%= i%>" onclick="suspend('<%= i%>')" style="cursor: pointer;box-shadow: none;">Suspend</button>
 
@@ -267,7 +157,7 @@
 
                                             <button type="button" class="btn btn-secondary" data-dismiss="modal" style="cursor: pointer;box-shadow: none;">Close</button>
                                             <%
-                                                if (!(surveys.get(i).getUserID().equals(currentUser.getId()))) {
+                                                if (!(surveys.get(i).getUserID().equals(""))) {
                                             %>
                                             <input type="submit" class="btn btn-primary" data-surveyid="<%= surveys.get(i).getId()%>" id="submit-survey-button-<%= i%>" onclick="submit('<%= i%>')"  value="Submit" style="cursor: pointer;box-shadow: none;">
                                             <%}%>
@@ -308,41 +198,10 @@
                     <!--End of Home Body-->
 
                 </div>
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-            </div>
-        </div>
-
-
-        <script type='text/javascript' src='popper.js'></script>
+    </body>
+    
+    
+    <script type='text/javascript' src='popper.js'></script>
         <script type='text/javascript' src='bootstrap.js'></script>
         <script type='text/javascript' src='home.js'></script>
-    </body>
 </html>
-<%}%>

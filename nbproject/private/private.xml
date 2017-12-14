@@ -3,11 +3,10 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/F:/PROJECTS/IA/survey-application/src/java/Model/SurveyCounter.java</file>
-            <file>file:/F:/PROJECTS/IA/survey-application/web/AdminPage.jsp</file>
-            <file>file:/F:/PROJECTS/IA/survey-application/web/Profile.jsp</file>
-            <file>file:/F:/PROJECTS/IA/survey-application/web/UserPanel.jsp</file>
-            <file>file:/F:/PROJECTS/IA/survey-application/src/java/Controller/SurveyAnsersController.java</file>
+            <file>file:/F:/PROJECTS/IA/tmpp/survey-application/web/userPanel.js</file>
+            <file>file:/F:/PROJECTS/IA/tmpp/survey-application/web/css/userPanel.css</file>
+            <file>file:/F:/PROJECTS/IA/tmpp/survey-application/web/UserPanel.jsp</file>
+            <file>file:/F:/PROJECTS/IA/tmpp/survey-application/src/java/Model/SurveyCounter.java</file>
         </group>
     </open-files>
 </project-private>

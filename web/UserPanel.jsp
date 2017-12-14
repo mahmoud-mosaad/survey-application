@@ -63,40 +63,80 @@
 
         <div id="accordion" role="tablist">
 
+            <span>Name of survey</span>
+            <span class="float-right"># of submission</span>
             <%
                 SurveyCounter sc = new SurveyCounter();
+                SurveyCounter sc1 = new SurveyCounter();
                 Survey s = new Survey();
-//                ArrayList<SurveyCounter> surveyCounters = new ArrayList<SurveyCounter>();
+                ArrayList<SurveyCounter> surveyCounters = new ArrayList<SurveyCounter>();
                 ArrayList<Survey> surveys = new ArrayList<Survey>();
                 surveys = s.getSurveys();
-//                surveyCounters = sc.getSubmitedSpamedSurveysByCount(currentUser.getId());
+                surveyCounters = sc.getSubmitedSurvey();
                 for(int i=0 ; i<surveys.size() ; i++)
                 {
+                    int ii=0;
                     if(surveys.get(i).getUserID().equals(currentUser.getId()))
                     {
                         sc = sc.getSingleSubmitedSurveysCount(surveys.get(i).getId());
                         
             %>
 
+            
             <div class="card">
-                <div class="card-header" role="tab" id="">
-                    <h5 class="mb-0">
+                
+                <div class="card-header row" role="tab" id="">
+                    <div class="col-lg-11">
+                    <h5 class="mb-0 collapse">
                         <a data-toggle="collapse" href="#collapseOne-<%=i%>" aria-expanded="true" aria-controls="collapseOne">
                             <%= surveys.get(i).getName()%>
                         </a>
-                        <span class="float-right">
+                        <span class="float-right" style="color:blue">
                             
-                            <%= sc.getSubmitedSurveyCount()%>
+                          <%= sc.getSubmitedSurveyCount()%>
                             
-                        </span>
+                        </span> 
                     </h5>
-
-
+                    </div>
+                          <div class="col-lg-1">Suspend</div>
                 </div>
 
                 <div id="collapseOne-<%=i%>" class="collapse show" role="tabpanel" aria-labelledby="headingOne" data-parent="#accordion">
                     <div class="card-body">
-                        <%= surveys.get(i).getDesc()%>
+                        <table class="padding display-inline">
+                            
+                            <tr id="table-row">
+                                <th id="table-head">#</th>
+                                <th id="table-head">User-Name</th>
+                                <th id="table-head">Age</th>
+                                <th id="table-head">Gender</th>
+                            </tr>
+                            
+                            <%
+                                for(int h=0 ; h<surveyCounters.size() ; h++)
+                                {
+                                    
+                                    if(surveyCounters.get(h).getSurevyID().equals(surveys.get(i).getId()))
+                                    {
+                                        
+                                    User user = new User();
+                                    if(!surveyCounters.get(h).getUserID().equals("mina")){
+                                    user = user.getUserByID(surveyCounters.get(h).getUserID());
+                                    }
+                                
+                            %>
+                            <tr>
+                                <th id="table-head"><%= ++ii%></th>
+                                <th id="table-head"><%= user.getName()%></th>
+                                <th id="table-head"><%= user.getAge()%></th>
+                                <th id="table-head"><%= user.getGender()%></th>
+                            </tr>
+                            
+                            <%}}%>
+                            
+                        </table>
+                            <img src="http://via.placeholder.com/500x150" class="img" style="vertical-align: top;">
+                        <!--<div class="padding display-inline"></div>-->
                     </div>
                 </div>
             </div>

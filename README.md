@@ -21,9 +21,8 @@ creator.
 2. Receive notification about reported posts.
 3. Suspend users.
 4. Send messages to all the survey platform users or to single user.
-5. Remove/suspend Polls (JavaScript/Ajax Assignment)
-a. Show a list of opened polls
-b. Clicking on one them will show the admin a dialog to remove/suspend the
-poll.
-c. The removed poll will disappear from the list without reloading the page.
-d. The suspended poll will marked from the list without reloading the page.
+5. Remove/suspend Polls (JavaScript/Ajax Assignment).
+	a. Show a list of opened polls. \\
+	b. Clicking on one them will show the admin a dialog to remove/suspend the poll. \\
+	c. The removed poll will disappear from the list without reloading the page. \\
+	d. The suspended poll will marked from the list without reloading the page. \\

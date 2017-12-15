@@ -25,7 +25,7 @@ function suspend($id) {
     console.log(surveyID);
     var request = new XMLHttpRequest();
 
-    request.open("GET", "SurveyController?suspend=" + surveyID, true);
+    request.open("POST", "SurveyController?suspend=" + surveyID, true);
     request.send();
     request.onreadystatechange = function ()
     {
@@ -50,7 +50,7 @@ function remove($id) {
     console.log(surveyID);
     var request = new XMLHttpRequest();
 
-    request.open("GET", "SurveyController?remove=" + surveyID, true);
+    request.open("POST", "SurveyController?remove=" + surveyID, true);
     request.send();
     request.onreadystatechange = function ()
     {
@@ -71,14 +71,14 @@ function remove($id) {
 
 }
 ;
-
+ 
 function spam($id)
 {
     var userID = $('#spam-survey-button-' + $id).data('userid');
     var surveyID = $('#spam-survey-button-' + $id).data('surveyid');
 
     var request = new XMLHttpRequest();
-    request.open("GET", "SurveyController?spam=" + surveyID + "-" + userID, true);
+    request.open("POST", "SurveyController?spam=" + surveyID + "-" + userID, true);
     request.send();
     request.onreadystatechange = function ()
     {
@@ -86,6 +86,7 @@ function spam($id)
         {
             if (request.responseText == "ok") {
                 console.log("spam success");
+                $('#spam-survey-button-' + $id).attr('disabled','disabled');
             } else
             {
                 console.log("spam not success");

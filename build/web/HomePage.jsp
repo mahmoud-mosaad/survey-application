@@ -227,49 +227,37 @@
                                         <div class="modal-footer">
 
                                             <%
-                                                if (!surveys.get(i).getUserID().equals(currentUser.getId())) {
+                                                if (surveys.get(i).getUserID().equals(currentUser.getId()) == false) {
+                                                    
                                                     if (spammedSurveys.size() > 0) {
-                                                        for (int j = 0; j < spammedSurveys.size(); j++) {
-                                                            if (!spammedSurveys.get(j).getUserID().equals(currentUser.getId())) {
-
-
+                                                           Spam checkSpammed = new Spam();
+                                                           if(checkSpammed.checkIfSpammed(currentUser.getId() , surveys.get(i).getId()) == false)
+                                                           {
                                             %>
-
-                                            <button type="button" class="btn btn-danger" data-surveyid="<%= surveys.get(i).getId()%>" data-userid="<%= currentUser.getId()%>" id="spam-survey-button-<%= i%>" onclick="spam('<%= i%>')" style="cursor: pointer; box-shadow: none;">Spam!</button>
-                                            <%}
-                                                }
-                                            } else {%>
-                                            <button type="button" class="btn btn-danger" data-surveyid="<%= surveys.get(i).getId()%>" data-userid="<%= currentUser.getId()%>" id="spam-survey-button-<%= i%>" onclick="spam('<%= i%>')" style="cursor: pointer; box-shadow: none;">Spam!</button>
+                                            <button type="button" class="btn btn-danger" data-surveyid="<%= surveys.get(i).getId()%>" data-userid="<%= currentUser.getId()%>" id="spam-survey-button-<%= i%>" onclick="spam('<%= i%>')" style="cursor: pointer; box-shadow: none; border-radius: 0px; margin: 0px;">Spam!</button>        
                                             <%
-
-                                                    }
-                                                }%>
-
-
-
-
-
-
-
-
-
-
-
-
-
+                                                           }
+                                                    }else
+                                                    {
+                                            %>            
+                                            <button type="button" class="btn btn-danger" data-surveyid="<%= surveys.get(i).getId()%>" data-userid="<%= currentUser.getId()%>" id="spam-survey-button-<%= i%>" onclick="spam('<%= i%>')" style="cursor: pointer; box-shadow: none; border-radius: 0px; margin: 0px;">Spam!</button>
+                                                       
+                                                        
+                                                    <%}%>
+                                            <%}%>
                                             <%
                                                 if ((surveys.get(i).getUserID().equals(currentUser.getId())) || (currentUser.getType() == 1)) {
                                             %>
-                                            <button type="button" class="btn btn-danger" data-surveyid="<%= surveys.get(i).getId()%>" id="suspend-survey-button-<%= i%>" onclick="suspend('<%= i%>')" style="cursor: pointer;box-shadow: none;">Suspend</button>
+                                            <button type="button" class="btn btn-danger" data-surveyid="<%= surveys.get(i).getId()%>" id="suspend-survey-button-<%= i%>" onclick="suspend('<%= i%>')" style="cursor: pointer;box-shadow: none; border-radius: 0px; margin: 0px;">Suspend</button>
 
-                                            <button type="button" class="btn btn-warning" data-surveyid="<%= surveys.get(i).getId()%>" id="remove-survey-button-<%= i%>" onclick="remove('<%= i%>')" style="cursor: pointer;box-shadow: none;">Remove</button>
+                                            <button type="button" class="btn btn-warning" data-surveyid="<%= surveys.get(i).getId()%>" id="remove-survey-button-<%= i%>" onclick="remove('<%= i%>')" style="cursor: pointer;box-shadow: none; border-radius: 0px; margin: 0px;">Remove</button>
                                             <%}%>
 
-                                            <button type="button" class="btn btn-secondary" data-dismiss="modal" style="cursor: pointer;box-shadow: none;">Close</button>
+                                            <button type="button" class="btn btn-secondary" data-dismiss="modal" style="cursor: pointer;box-shadow: none; border-radius: 0px; margin: 0px;">Close</button>
                                             <%
                                                 if (!(surveys.get(i).getUserID().equals(currentUser.getId()))) {
                                             %>
-                                            <input type="submit" class="btn btn-primary" data-surveyid="<%= surveys.get(i).getId()%>" id="submit-survey-button-<%= i%>" onclick="submit('<%= i%>')"  value="Submit" style="cursor: pointer;box-shadow: none;">
+                                            <input type="submit" class="btn btn-primary" data-surveyid="<%= surveys.get(i).getId()%>" id="submit-survey-button-<%= i%>" onclick="submit('<%= i%>')"  value="Submit" style="cursor: pointer;box-shadow: none; border-radius: 0px; margin: 0px;">
                                             <%}%>
                                         </div>
 

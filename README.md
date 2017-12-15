@@ -1,8 +1,11 @@
 # Poll/Survey Application
 Examples (google forms, sogosurveys, surveymonkey)
+
 Build a simple site that lets users create their own polls/surveys, share them via a URL and
+
 let them view the results through an admin panel.
-Users
+
+# Users
 1. Register for account.
 2. Add poll / survey with different kind of questions (MCQ, free answer, Checkboxes).
 3. After user saves the survey, it’s showed on the website homepage.
@@ -12,7 +15,8 @@ added / “close” is removed and its content can’t be viewed).
 6. Other users can fill survey and choose to avail their information or not to the survey
 creator.
 7. Other users can report a poll / survey if it has (inappropriate contents).
-Administrator
+
+# Administrator
 1. Add other administrators.
 2. Receive notification about reported posts.
 3. Suspend users.

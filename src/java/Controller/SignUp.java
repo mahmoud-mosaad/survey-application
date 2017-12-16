@@ -61,7 +61,7 @@ public class SignUp extends HttpServlet {
             if(user.addUser(user)){
             HttpSession session = request.getSession(true);
             session.setAttribute("currentUser", user);
-//            session.setMaxInactiveInterval(60*60);
+            session.setMaxInactiveInterval(60);
             user.changeState(user.getEmail(), 1);
             response.sendRedirect("HomePage.jsp");
             }else

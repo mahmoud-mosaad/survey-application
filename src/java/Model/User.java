@@ -4,7 +4,7 @@ import DB.DataBaseInfo;
 import java.sql.*;
 import java.util.ArrayList;
 
-public class User{
+public class User {
 
     private String id;
     private String name;

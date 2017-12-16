@@ -14,4 +14,10 @@
     <welcome-file>SignIn.jsp</welcome-file>
     </welcome-file-list>
     
+   
+        <listener>
+		<listener-class>Controller.SessionDestroyer</listener-class>
+	</listener>
+
+    
 </web-app>

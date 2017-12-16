@@ -1,7 +1,21 @@
+
+function mm($id)
+{
+    $msg = $('#admin-suspend-msg-'+$id).val();
+    if($msg.length==0){
+        if($("#admin-suspend-button-"+$id).text() != "Undo"){
+        $("#admin-suspend-button-"+$id).attr("disabled","disabled");}
+    }else{
+        $("#admin-suspend-button-"+$id).removeAttr("disabled");
+        
+    }
+}
+
 function suspendManager($isSuspended , $id ,$mail)
 {
     $msg = $('#admin-suspend-msg-'+$id).val();
     $id = '#admin-suspend-button-'+$id;
+    
     
     if ($isSuspended == '1') {
         // not suspended
@@ -16,7 +30,7 @@ function suspendManager($isSuspended , $id ,$mail)
             {
                 if(request.responseText === "ok"){
                     $($id).text('Undo');
-                    location.reload(); 
+//                    location.reload(); 
                 }
             }
         };

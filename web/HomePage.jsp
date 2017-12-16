@@ -64,16 +64,16 @@
                     </li>
 
                     <li class='nav-item'>
-                        <%
-                            String path;
-                            if (currentUser.getType() == 0) {
-                                path = "UserPanel.jsp";
-                            } else {
-                                path = "AdminPage.jsp";
-                            }
-                        %>
-                        <a class='nav-link' data-toggle="tooltip" title="my Panel" href='<%= path%>'>My Panel</a>
+                        <a class='nav-link' data-toggle="tooltip" title="my Panel" href='UserPanel.jsp'>My Panel</a>
                     </li>
+                    <%
+                        if(currentUser.getType()==1){
+                    %>
+                    <li class='nav-item'>
+                        <a class='nav-link' data-toggle="tooltip" title="my Panel" href='AdminPage.jsp'>Admin Panel</a>
+                    </li>
+                    
+                    <%}%>
 
                     <%
                         if (currentUser.getType() == 1) {
@@ -101,9 +101,7 @@
                                         <form action="Survey.jsp?spammedSurveyNumber=<%= ii%>" method="POST">
                                             <input class='dropdown-item' type="submit" data-surveyid="<%= spamSurveys.get(ii).getSurveyID()%>" value="<%=survey.getName()%>"/>   
                                             <input name='surveyID-<%= ii%>' value="<%= spamSurveys.get(ii).getSurveyID()%>" type="text" hidden="true"/>
-                                            <input name='surveyName-<%= ii%>' value="<%= survey.getName()%>" type="text" hidden="true"/>
-                                            <input name='userID-<%= ii%>' value="<%= survey.getUserID()%>" type="text" hidden="true"/>
-                                            <input name='useridd-<%= ii%>' value="<%= currentUser.getId()%>" type="text" hidden="true"/>
+                                            
                                         </form>
                                     </th>
                                     <th style="text-align: center;"><%= spamSurveys.get(ii).getSpamCount()%></th>
@@ -170,8 +168,14 @@
                                         <span aria-hidden="true">&times;</span>
                                     </button>
                                 </div>
-                                <div class="modal-body">
-
+                                    <%if(surveys.get(i).getUserID().equals(currentUser.getId())){
+                                        
+                                    %>
+                                    <div style="font-size: 11px;">http://localhost:8080/survey-application/Survey.jsp?spammedSurveyNumber=<%= i%>&surveyID-<%= i%>=<%=surveys.get(i).getId()%></div>
+                                    <%}%>
+                                    
+                                    <div class="modal-body">
+                                    
                                     <form   action="SurveyAnsersController?surveyNumber=<%= i%>~<%= surveys.get(i).getId()%>" method="POST" id="survey-form-<%= i%>">
 
                                         <%
@@ -312,11 +316,11 @@
                                                 
                                             %>
                                             
-                                            <input type="submit" class="btn btn-primary" data-surveyid="<%= surveys.get(i).getId()%>" name="anonymous-<%= i%>" id="submit-survey-abutton-<%= i%>"  value="Submit As Annonynas" style="cursor: pointer;box-shadow: none; border-radius: 0px; margin: 0px;">
+                                            <input type="submit" class="btn btn-primary" data-surveyid="<%= surveys.get(i).getId()%>" name="anonymous-<%= i%>" id="submit-survey-abutton-<%= i%>"  value="As Annonynas" style="cursor: pointer;box-shadow: none; border-radius: 0px; margin: 0px;">
                                             <input type="submit" class="btn btn-primary" data-surveyid="<%= surveys.get(i).getId()%>" name="submit-<%= i%>" id="submit-survey-button-<%= i%>"  value="Submit" style="cursor: pointer;box-shadow: none; border-radius: 0px; margin: 0px;">
                                             <%}else{%>
                                             
-                                            <input type="submit" class="btn btn-primary" data-surveyid="<%= surveys.get(i).getId()%>" name="anonymous-<%= i%>" id="submit-survey-abutton-<%= i%>"  onmouseenter="submitAnswer('<%= i%>')" value="Submit As Annonynas" style="cursor: pointer;box-shadow: none; border-radius: 0px; margin: 0px;">
+                                            <input type="submit" class="btn btn-primary" data-surveyid="<%= surveys.get(i).getId()%>" name="anonymous-<%= i%>" id="submit-survey-abutton-<%= i%>"  onmouseenter="submitAnswer('<%= i%>')" value="As Annonynas" style="cursor: pointer;box-shadow: none; border-radius: 0px; margin: 0px;">
                                             <input type="submit" class="btn btn-primary" data-surveyid="<%= surveys.get(i).getId()%>" id="submit-survey-button-<%= i%>" name="update-<%= i%>" onmouseenter="submitAnswer('<%= i%>')"  value="Update" style="cursor: pointer;box-shadow: none; border-radius: 0px; margin: 0px;">
                                             <%}}%>
                                         </div>

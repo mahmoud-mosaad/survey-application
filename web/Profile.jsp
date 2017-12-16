@@ -55,16 +55,16 @@
                     </li>
 
                     <li class='nav-item'>
-                        <%
-                            String path;
-                            if (currentUser.getType() == 0) {
-                                path = "UserPanel.jsp";
-                            } else {
-                                path = "AdminPage.jsp";
-                            }
-                        %>
-                        <a class='nav-link' data-toggle="tooltip" title="my Panel" href='<%= path%>'>My Panel</a>
+                        
+                        <a class='nav-link' data-toggle="tooltip" title="my Panel" href='UserPanel.jsp'>My Panel</a>
                     </li>
+                    <%
+                        if(currentUser.getType()==1){
+                    %>
+                    <li class='nav-item'>
+                        <a class='nav-link' data-toggle="tooltip" title="my Panel" href='AdminPage.jsp'>Admin Panel</a>
+                    </li>
+                    <%}%>
 
                     <%
                         if (currentUser.getType() == 1) {
@@ -88,7 +88,14 @@
                                 %>
 
                                 <tr>
-                                    <th><a class='dropdown-item' data-surveyid="<%= spamSurveys.get(ii).getSurveyID()%>" href='#'><%= survey.getName()%></a></th>
+                                    <th>
+                                        <form action="Survey.jsp?spammedSurveyNumber=<%= ii%>" method="POST">
+                                            <input class='dropdown-item' type="submit" data-surveyid="<%= spamSurveys.get(ii).getSurveyID()%>" value="<%=survey.getName()%>"/>   
+                                            <input name='surveyID-<%= ii%>' value="<%= spamSurveys.get(ii).getSurveyID()%>" type="text" hidden="true"/>
+                                           
+                                            <input name='useridd-<%= ii%>' value="<%= currentUser.getId()%>" type="text" hidden="true"/>
+                                        </form>
+                                    </th>
                                     <th style="text-align: center;"><%= spamSurveys.get(ii).getSpamCount()%></th>
                                 </tr>
 

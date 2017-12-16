@@ -53,9 +53,18 @@
                         <a class='nav-link' data-toggle="tooltip" title="Profile" href='Profile.jsp'>Profile</a>
                     </li>
 
-                    <li class='nav-item active'>
-                        <a class='nav-link' data-toggle="tooltip" title="Admin Panel" href='#'>My Panel</a>
+                    <li class='nav-item'>
+                        
+                        <a class='nav-link' data-toggle="tooltip" title="my Panel" href='UserPanel.jsp'>My Panel</a>
                     </li>
+                    <%
+                        if(currentUser.getType()==1){
+                    %>
+                    <li class='nav-item active'>
+                        <a class='nav-link' data-toggle="tooltip" title="my Panel" href='AdminPage.jsp'>Admin Panel</a>
+                    </li>
+                    
+                    <%}%>
 
                     <li class='nav-item dropdown'>
                         <a class='nav-link dropdown-toggle' href='#' id='navbarDropdown' role='button' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'>
@@ -69,19 +78,26 @@
                                     <th>spam count</th>
                                 </tr>
 
-                                <%
+                               <%
                                     for (int ii = 0; ii < spamSurveys.size(); ii++) {
                                         Survey survey = new Survey();
                                         survey = survey.getSurvey(spamSurveys.get(ii).getSurveyID());
                                 %>
 
                                 <tr>
-                                    <th><a class='dropdown-item' data-surveyid="<%= spamSurveys.get(ii).getSurveyID()%>" href='#'><%= survey.getName()%></a></th>
+                                    <th>
+                                        <form action="Survey.jsp?spammedSurveyNumber=<%= ii%>" method="POST">
+                                            <input class='dropdown-item' type="submit" data-surveyid="<%= spamSurveys.get(ii).getSurveyID()%>" value="<%=survey.getName()%>"/>   
+                                            <input name='surveyID-<%= ii%>' value="<%= spamSurveys.get(ii).getSurveyID()%>" type="text" hidden="true"/>
+                                           
+                                            <input name='useridd-<%= ii%>' value="<%= currentUser.getId()%>" type="text" hidden="true"/>
+                                        </form>
+                                    </th>
                                     <th style="text-align: center;"><%= spamSurveys.get(ii).getSpamCount()%></th>
                                 </tr>
 
 
-                           <%}%>
+                                <%}%>
                            
                            </table>
                         </div>
@@ -104,7 +120,7 @@
         %>
 
         <div class="form-group form-inline">
-            <input type="text" class="form-control" name="" id="admin-msg-all"  placeholder="Enter your Msg here" style="border-radius: 0px; width: 90%">
+            <input type="text" class="form-control" name="" required="true" id="admin-msg-all"  placeholder="Enter your Msg here to ALL" style="border-radius: 0px; width: 90%">
             <button  class="btn btn-primary"  onclick="sendMsgToAll()" id="" style="border-radius: 0px; box-shadow: none">Go All</button>
         </div>
 
@@ -135,7 +151,7 @@
                 <th id="user-table-head-row">
                     <form action="AdminController" method="POST" class="form-inline">
                         <div class="form-group">
-                            <input type="password" class="form-control" name="user-new-password" id="exampleInputEmail1"  placeholder="Enter New User Password" style="border-radius: 0px;">
+                            <input type="password" required="true" class="form-control" name="user-new-password" id="exampleInputEmail1"  placeholder="Enter New User Password" style="border-radius: 0px;">
                             <input type="text" class="form-control" name="user-email" hidden="true" id="user-id" value="<%= users.get(i).getEmail()%>" >
                             <small id="emailHelp" class="form-text" hidden="true"></small>
                         </div>
@@ -148,17 +164,8 @@
                 <th id="user-table-head-row">
                     <div class="input-group">
                     
-                    <input type="text" class="form-control" placeholder="Send the reason of suspend" id="admin-suspend-msg-<%= i%>">
-                    <button id="admin-suspend-button-<%= i%>"  onclick="suspendManager('<%= 1 - users.get(i).isSuspended()%>', <%= i%>, '<%= users.get(i).getEmail()%>')" type="button" class="btn btn-danger" style="cursor: pointer; box-shadow: none; border-radius: 0px">
-
-                        <%
-                            if (users.get(i).isSuspended() == 0) {
-                                out.print("Suspend");
-                            } else {
-                                out.print("Undo");
-                            }
-                        %>
-                    </button>
+                        <input type="text" class="form-control" onmouseout="mm(<%= i%>)"  placeholder="Send the reason of suspend" id="admin-suspend-msg-<%= i%>">
+                    <button id="admin-suspend-button-<%= i%>"  onclick="suspendManager('<%= 1 - users.get(i).isSuspended()%>', <%= i%>, '<%= users.get(i).getEmail()%>')" type="button" class="btn btn-danger" style="cursor: pointer; box-shadow: none; border-radius: 0px"><%if (users.get(i).isSuspended() == 0) {out.print("Suspend");}else {out.print("Undo");}%></button>
                     </div>
                 </th>
 
@@ -174,7 +181,16 @@
                 </th>
 
                 <th id="user-table-head-row">
-                    <button id="make-admin-button-<%= i%>"  onclick="makeAdmin('<%= 1 - users.get(i).getType()%>', this.id, '<%= users.get(i).getEmail()%>')" type="button" class="btn btn-danger" style="cursor: pointer; box-shadow: none">
+                    <button id="make-admin-button-<%= i%>"
+                            
+                            <%
+                                if(users.get(i).getType()==1)
+                                {
+                                    out.print(" disabled='true' ");
+                                }
+                            %>
+                            
+                            onclick="makeAdmin('<%= 1 - users.get(i).getType()%>', this.id, '<%= users.get(i).getEmail()%>')" type="button" class="btn btn-danger" style="cursor: pointer; box-shadow: none">
 
                         <%
                             if (users.get(i).getType() == 0) {
@@ -188,7 +204,7 @@
 
                 <th id="user-table-head-row">
                     <div class="form-group form-inline" style="margin: auto;">
-                        <input type="text" class="form-control" name="" id="admin-msg-<%= i%>"  placeholder="Enter your Msg here" style="border-radius: 0px;">
+                        <input type="text" class="form-control" required="true" name="" id="admin-msg-<%= i%>"  placeholder="Enter your Msg here" style="border-radius: 0px;">
                         <button  class="btn btn-primary" onclick="sendMsg('<%= users.get(i).getEmail()%>', '<%= i%>', '<%= users.get(i).getId()%>')" id="change-password-button" style="border-radius: 0px; box-shadow: none">Go</button>
                     </div>
                 </th>

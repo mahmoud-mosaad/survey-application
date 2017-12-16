@@ -1,3 +1,4 @@
+<%@page import="Model.Spam"%>
 <%@page import="Model.Survey"%>
 <%@page import="Model.User"%>
 <%@page import="Model.SurveyCounter"%>
@@ -14,7 +15,7 @@
             response.sendRedirect("SignIn.jsp");
         } else {
             currentUser = (User) session.getAttribute("currentUser");
-            if (currentUser.getType() == 1) {
+            if (currentUser.getType() == 11) {
                 response.sendRedirect("HomePage.jsp");
             } else {
 
@@ -30,6 +31,10 @@
         <script type='text/javascript' src='jQuery.js'></script>
     </head>
     <body>
+        <%            Spam spam1 = new Spam();
+            ArrayList<Spam> spamSurveys = new ArrayList<Spam>();
+            spamSurveys = spam1.getSpamedSurveysByCount();
+        %>
         <!-- Start of Nav Bar -->
         <nav class='navbar navbar-expand-lg navbar-light bg-light'>
             <a class='navbar-brand logo' href='#'>HI, <%= currentUser.getName()%></a>
@@ -49,8 +54,60 @@
                     </li>
 
                     <li class='nav-item active'>
-                        <a class='nav-link' data-toggle="tooltip" title="Admin Panel" href='#'>My Panel</a>
+                        
+                        <a class='nav-link' data-toggle="tooltip" title="my Panel" href='UserPanel.jsp'>My Panel</a>
                     </li>
+                    <%
+                        if(currentUser.getType()==1){
+                    %>
+                    <li class='nav-item'>
+                        <a class='nav-link' data-toggle="tooltip" title="my Panel" href='AdminPage.jsp'>Admin Panel</a>
+                    </li>
+                    
+                    <%}%>
+                    
+                    
+                    
+                     <%
+                        if (currentUser.getType() == 1) {
+                    %>
+                    <li class='nav-item dropdown'>
+                        <a class='nav-link dropdown-toggle' href='#' id='navbarDropdown' role='button' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'>
+                            Notifications
+                        </a>
+                        <div class='dropdown-menu' aria-labelledby='navbarDropdown' style="width: 238px;">
+                            <table>
+
+                                <tr style="text-align: center;">
+                                    <th>survey Name</th>
+                                    <th>spam count</th>
+                                </tr>
+
+                                <%
+                                    for (int ii = 0; ii < spamSurveys.size(); ii++) {
+                                        Survey survey = new Survey();
+                                        survey = survey.getSurvey(spamSurveys.get(ii).getSurveyID());
+                                %>
+
+                                <tr>
+                                    <th>
+                                        <form action="Survey.jsp?spammedSurveyNumber=<%= ii%>" method="POST">
+                                            <input class='dropdown-item' type="submit" data-surveyid="<%= spamSurveys.get(ii).getSurveyID()%>" value="<%=survey.getName()%>"/>   
+                                            <input name='surveyID-<%= ii%>' value="<%= spamSurveys.get(ii).getSurveyID()%>" type="text" hidden="true"/>
+                                            
+                                        </form>
+                                    </th>
+                                    <th style="text-align: center;"><%= spamSurveys.get(ii).getSpamCount()%></th>
+                                </tr>
+
+
+                                <%}%>
+
+                            </table>
+                        </div>
+                    </li>
+                    <%}%>
+                    
                 </ul>
                 <form action="SignOut" method="POST">
                     <input class="btn btn-outline-secondary sign-out-button" style="box-shadow:none;" type="submit" value="Sign-Out">
@@ -90,6 +147,9 @@
                         <a data-toggle="collapse" href="#collapseOne-<%=i%>" aria-expanded="true" aria-controls="collapseOne">
                               <span style="color:blue"> <%= surveys.get(i).getName()%> </span>
                         </a>
+                        
+                        <span style="font-size: 11px; margin-left: 9px">   http://localhost:8080/survey-application/Survey.jsp?spammedSurveyNumber=<%= i%>&surveyID-<%= i%>=<%=surveys.get(i).getId()%></span>
+                        
                         <span class="float-right" >
                             
                             # of submission: <span style="color:blue"> <%= sc.getSubmitedSurveyCount()%></span>

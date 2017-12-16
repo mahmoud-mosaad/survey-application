@@ -145,7 +145,27 @@ public class SurveyCounter {
         return sc;
     }
     
-    
+    public Boolean checkIfSubumittedBefore(String userID , String surveyID) {
+        try {
+            String ss="";
+            Class.forName(CONNECT_STRING);
+            Connection conn = DriverManager.getConnection(this.URL, this.USER, this.PASS);
+            Statement stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT userID FROM " + TABLE_NAME +" where userID="+x(userID)+" AND surveyID="+x(surveyID));
+            while (rs.next()) {
+                ss = rs.getString("userID");
+            }
+            rs.close();
+            stmt.close();
+            conn.close();
+            if(ss.equals("") || ss == null){return false;}else{return true;}
+        } catch (Exception e) {
+            System.err.println("-------------------------------------");
+            System.err.println("error in checking user spam  " + e);
+            System.err.println("-------------------------------------"); 
+        }
+        return false;
+    }
     
     
 }

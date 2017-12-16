@@ -159,6 +159,21 @@ $('#Surevy_Form').on('submit', function (e) {
     var freeanswer  = String($('.freeAnswer').length);
     var checkbox = String($('.checkbox').length);
 
+    if($("input[type='text']").length < 5 ){e.preventDefault();}
+    if($(".mcq").length > 0  ){
+    if($("input[type='radio']").length < $(".mcq").length*2 ){e.preventDefault();}
+    }
+    
+    if($(".checkbox").length > 0  ){
+    if($("input[type='checkbox']").length < $(".checkbox").length*2 ){e.preventDefault();}
+    }
+    
+    
+    for(i=1 ; i<= $('.mcq').length ; i++)
+    {
+        mcq = mcq + "-" + String($('div[name="mcq-parent-'+i+'"]').length);
+    }
+    
     for(i=1 ; i<= $('.mcq').length ; i++)
     {
         mcq = mcq + "-" + String($('div[name="mcq-parent-'+i+'"]').length);

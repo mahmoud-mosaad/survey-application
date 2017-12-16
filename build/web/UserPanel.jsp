@@ -62,9 +62,6 @@
 
 
         <div id="accordion" role="tablist">
-
-            <span>Name of survey</span>
-            <span class="float-right"># of submission</span>
             <%
                 SurveyCounter sc = new SurveyCounter();
                 SurveyCounter sc1 = new SurveyCounter();
@@ -85,20 +82,22 @@
             
             <div class="card">
                 
-                <div class="card-header row" role="tab" id="">
-                    <div class="col-lg-11">
+                <div class="card-header row" role="tab" id="" style=" padding: 0px;">
+                    
+                    <div class="col-lg-11" style=" margin: 10px 0px;">
                     <h5 class="mb-0 collapse">
+                        Name of survey:
                         <a data-toggle="collapse" href="#collapseOne-<%=i%>" aria-expanded="true" aria-controls="collapseOne">
-                            <%= surveys.get(i).getName()%>
+                              <span style="color:blue"> <%= surveys.get(i).getName()%> </span>
                         </a>
-                        <span class="float-right" style="color:blue">
+                        <span class="float-right" >
                             
-                          <%= sc.getSubmitedSurveyCount()%>
+                            # of submission: <span style="color:blue"> <%= sc.getSubmitedSurveyCount()%></span>
                             
                         </span> 
                     </h5>
                     </div>
-                          <div class="col-lg-1">Suspend</div>
+                            <div class="col-lg-1 btn btn-primary custome-button" onclick="suspend('<%= i%>')" id="suspend-survey-button-<%= i%>" data-surveyid="<%= surveys.get(i).getId()%>"><span>Suspend</span></div>
                 </div>
 
                 <div id="collapseOne-<%=i%>" class="collapse show" role="tabpanel" aria-labelledby="headingOne" data-parent="#accordion">
@@ -120,9 +119,9 @@
                                     {
                                         
                                     User user = new User();
-                                    if(!surveyCounters.get(h).getUserID().equals("mina")){
+                                    if(!surveyCounters.get(h).getUserID().equals("anonymous")){
                                     user = user.getUserByID(surveyCounters.get(h).getUserID());
-                                    }
+                                    
                                 
                             %>
                             <tr>
@@ -132,7 +131,7 @@
                                 <th id="table-head"><%= user.getGender()%></th>
                             </tr>
                             
-                            <%}}%>
+                            <%}}}%>
                             
                         </table>
                             <img src="http://via.placeholder.com/500x150" class="img" style="vertical-align: top;">

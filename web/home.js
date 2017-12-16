@@ -9,6 +9,12 @@ function disableAllInputs($id)
 }
 ;
 
+function ss(e)
+{
+    e.preventDefault();
+    console.log("prevented");
+}
+
 function removeSurvey($id) {
     $('#survey-body-' + $id).remove();
     $('#survey-model-' + $id).remove();
@@ -61,6 +67,7 @@ function remove($id) {
                 $('#survey-model-' + $id).modal('hide');
                 $('.modal-backdrop').remove();
                 removeSurvey($id);
+                
             } else
             {
                 console.log("remove not success");
@@ -95,26 +102,17 @@ function spam($id)
     };
 }
 
-//function submit($id)
-//{
-//    
-//    var mcq   = String($('.mcq').length);
-//    var freeanswer  = String($('.freeAnswer').length);
-//    var checkbox = String($('.checkbox').length);
-//    $('.mcqHidden').attr('name','mcq'+$id);
-//    $('.mcqHidden').attr('value',mcq);
-//    $('.checkBoxHidden').attr('value',checkbox);
-//    $('#freeanswer-answer-value-5-0').attr('value','10');
-//    
-//}
 
 function submitAnswer($id)
 {
+    
     var mcq = String($('.mcq-' + $id).length);
     var freeanswer = String($('.freeAnswer-' + $id).length);
     var checkbox = String($('.checkbox-' + $id).length);
+    console.log(mcq);
+    console.log(freeanswer);
+    console.log(checkbox);
     
-//    var mcq_questionID = $('.mcq-' + $id).data('questionid');
     for (j = 0; j < $('.mcq-' + $id).length; j++) {
         var mcq_questionID = $('.mcq-parent-question-' + $id+'-'+j).data('questionid');
         var v = $('input[name=mcq-answer-' + $id + '-' + j + ']:checked', '.mcq-' + $id).val();
@@ -161,3 +159,36 @@ function submitAnswer($id)
 //}, 5000);
 
 
+function removee($id) {
+    var surveyID = $('#remove-survey-button-' + $id).data('surveyid');
+    console.log(surveyID);
+    var request = new XMLHttpRequest();
+
+    request.open("POST", "SurveyController?remove=" + surveyID, true);
+    request.send();
+    request.onreadystatechange = function ()
+    {
+        if (request.status === 200 && request.readyState === 4)
+        {
+            if (request.responseText == "ok") {
+                console.log("remove success");
+                $('#survey-model-' + $id).modal('hide');
+                $('.modal-backdrop').remove();
+                removeSurvey($id);
+                window.location.href = "HomePage.jsp"; 
+            } else
+            {
+                console.log("remove not success");
+            }
+       
+}
+    };
+
+
+}
+;
+
+function disablebtn($id)
+{
+    $('#submit-survey-button-'+$id).hide();
+}

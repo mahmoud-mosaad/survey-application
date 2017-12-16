@@ -27,3 +27,11 @@
 {
     clear: both;
 }
+
+.custome-button
+{
+    border-radius: 0px;
+    margin: 0px;
+    cursor: pointer;
+}
+

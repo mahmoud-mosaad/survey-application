@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import Model.Question;
 import Model.Survey;
 
-public final class Survey_jsp extends org.apache.jasper.runtime.HttpJspBase
+public final class HomePage_jsp extends org.apache.jasper.runtime.HttpJspBase
     implements org.apache.jasper.runtime.JspSourceDependent {
 
   private static final JspFactory _jspxFactory = JspFactory.getDefaultFactory();
@@ -61,9 +61,16 @@ public final class Survey_jsp extends org.apache.jasper.runtime.HttpJspBase
       out.write("<!DOCTYPE html>\r\n");
       out.write("\r\n");
 
+    session = request.getSession(false);
+    if (session.getAttribute("currentUser") == null) {
+        response.sendRedirect("SignIn.jsp");
+    } else {
+
         User currentUser = new User();
-        currentUser.setId("minaaaaa");
-        currentUser.setName("annonymas");
+        currentUser = (User) session.getAttribute("currentUser");
+        if (currentUser.isSuspended() == 1) {
+            response.sendRedirect("SignOut");
+        }
 
 
 
@@ -154,11 +161,33 @@ public final class Survey_jsp extends org.apache.jasper.runtime.HttpJspBase
       out.write("\r\n");
       out.write("\r\n");
       out.write("                                <tr>\r\n");
-      out.write("                                    <th><a class='dropdown-item' data-surveyid=\"");
+      out.write("                                    <th>\r\n");
+      out.write("                                        <form action=\"Survey.jsp?spammedSurveyNumber=");
+      out.print( ii);
+      out.write("\" method=\"POST\">\r\n");
+      out.write("                                            <input class='dropdown-item' type=\"submit\" data-surveyid=\"");
       out.print( spamSurveys.get(ii).getSurveyID());
-      out.write("\" href='#'>");
+      out.write("\" value=\"");
+      out.print(survey.getName());
+      out.write("\"/>   \r\n");
+      out.write("                                            <input name='surveyID-");
+      out.print( ii);
+      out.write("' value=\"");
+      out.print( spamSurveys.get(ii).getSurveyID());
+      out.write("\" type=\"text\" hidden=\"true\"/>\r\n");
+      out.write("                                            <input name='surveyName-");
+      out.print( ii);
+      out.write("' value=\"");
       out.print( survey.getName());
-      out.write("</a></th>\r\n");
+      out.write("\" type=\"text\" hidden=\"true\"/>\r\n");
+      out.write("                                            <input name='userID-");
+      out.print( ii);
+      out.write("' value=\"");
+      out.print( survey.getDesc());
+      out.write("\" type=\"text\" hidden=\"true\"/>\r\n");
+      out.write("                                            \r\n");
+      out.write("                                        </form>\r\n");
+      out.write("                                    </th>\r\n");
       out.write("                                    <th style=\"text-align: center;\">");
       out.print( spamSurveys.get(ii).getSpamCount());
       out.write("</th>\r\n");
@@ -551,7 +580,6 @@ public final class Survey_jsp extends org.apache.jasper.runtime.HttpJspBase
 }
       out.write("\r\n");
       out.write("\r\n");
-      out.write("                                            <button type=\"button\" class=\"btn btn-secondary\" data-dismiss=\"modal\" style=\"cursor: pointer;box-shadow: none; border-radius: 0px; margin: 0px;\">Close</button>\r\n");
       out.write("                                            ");
 
                                                 if (!(surveys.get(i).getUserID().equals(currentUser.getId()))) {
@@ -699,6 +727,7 @@ public final class Survey_jsp extends org.apache.jasper.runtime.HttpJspBase
       out.write("        <script type='text/javascript' src='home.js'></script>\r\n");
       out.write("    </body>\r\n");
       out.write("</html>\r\n");
+}
     } catch (Throwable t) {
       if (!(t instanceof SkipPageException)){
         out = _jspx_out;

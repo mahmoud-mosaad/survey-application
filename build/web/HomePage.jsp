@@ -1,3 +1,5 @@
+<%@page import="Model.SurveyAnswers"%>
+<%@page import="Model.SurveyCounter"%>
 <%@page import="Model.Spam"%>
 <%@page import="Model.User"%>
 <%@page import="Model.Answer"%>
@@ -29,6 +31,7 @@
         <link rel='stylesheet' href='css\bootstrap.min.css'/>
         <link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css'/>
         <link rel='stylesheet' href='css\home.css'/>
+        <script type='text/javascript' src='jQuery.js'></script>
         <title>Home</title>
     </head>
 
@@ -94,7 +97,15 @@
                                 %>
 
                                 <tr>
-                                    <th><a class='dropdown-item' data-surveyid="<%= spamSurveys.get(ii).getSurveyID()%>" href='#'><%= survey.getName()%></a></th>
+                                    <th>
+                                        <form action="Survey.jsp?spammedSurveyNumber=<%= ii%>" method="POST">
+                                            <input class='dropdown-item' type="submit" data-surveyid="<%= spamSurveys.get(ii).getSurveyID()%>" value="<%=survey.getName()%>"/>   
+                                            <input name='surveyID-<%= ii%>' value="<%= spamSurveys.get(ii).getSurveyID()%>" type="text" hidden="true"/>
+                                            <input name='surveyName-<%= ii%>' value="<%= survey.getName()%>" type="text" hidden="true"/>
+                                            <input name='userID-<%= ii%>' value="<%= survey.getUserID()%>" type="text" hidden="true"/>
+                                            <input name='useridd-<%= ii%>' value="<%= currentUser.getId()%>" type="text" hidden="true"/>
+                                        </form>
+                                    </th>
                                     <th style="text-align: center;"><%= spamSurveys.get(ii).getSpamCount()%></th>
                                 </tr>
 
@@ -143,7 +154,7 @@
 
 
 
-                    <div class="card bg-primary text-white text-center p-3" data-surveyid="<%= surveys.get(i).getId()%>"  name="survey-body-<%= i%>" id="survey-body-<%= i%>"
+                    <div onclick="disablebtn('<%= i%>')" class="card bg-primary text-white text-center p-3" data-surveyid="<%= surveys.get(i).getId()%>"  name="survey-body-<%= i%>" id="survey-body-<%= i%>"
                          data-toggle="modal" data-target="#survey-model-<%= i%>" data-backdrop="static" style="cursor: pointer">
                         <div class="card-body">
                             <h4 class="card-title"><%= surveys.get(i).getName()%></h4>
@@ -161,7 +172,7 @@
                                 </div>
                                 <div class="modal-body">
 
-                                    <form  action="SurveyAnsersController?surveyNumber=<%= i%>~<%= surveys.get(i).getId()%>" method="POST" id="survey-form-<%= i%>">
+                                    <form   action="SurveyAnsersController?surveyNumber=<%= i%>~<%= surveys.get(i).getId()%>" method="POST" id="survey-form-<%= i%>">
 
                                         <%
                                             Question q = new Question();
@@ -170,6 +181,9 @@
                                             surveys.get(i).setFreeanswerQuestions(q.getQuestions(surveys.get(i).getId(), "freeanswer"));
                                             for (int j = 0; j < surveys.get(i).getMcqQuestions().size(); j++) {
                                                 Answer a = new Answer();
+                                                SurveyAnswers SA = new SurveyAnswers();
+                                                String expectedAnswer = SA.getAnswer(currentUser.getId(),surveys.get(i).getMcqQuestions().get(j).getId());
+                                                
                                                 surveys.get(i).getMcqQuestions().get(j).setMcqAnswers(a.getAnswer(surveys.get(i).getMcqQuestions().get(j).getId()));
 
                                         %>
@@ -177,9 +191,11 @@
                                             <div style="font-weight: bold;" ><%= surveys.get(i).getMcqQuestions().get(j).getValue()%></div>
                                             <%
                                                 for (int o = 0; o < surveys.get(i).getMcqQuestions().get(j).getMcqAnswers().size(); o++) {
+                                                    String actualAnswer = surveys.get(i).getMcqQuestions().get(j).getMcqAnswers().get(o).getValue();
+                                                
                                             %>
-                                            <input type="radio" onclick="submitAnswer('<%= i%>')" id="mcq-answer-<%= i%>-<%= j%>-<%= o%>" name="mcq-answer-<%= i%>-<%= j%>" value="<%= surveys.get(i).getMcqQuestions().get(j).getMcqAnswers().get(o).getValue()%>">
-
+                                            <input type="radio" <% if(expectedAnswer.equals(actualAnswer)){out.print("checked='true'");} %>  onclick="submitAnswer('<%= i%>')" id="mcq-answer-<%= i%>-<%= j%>-<%= o%>" name="mcq-answer-<%= i%>-<%= j%>" value="<%= surveys.get(i).getMcqQuestions().get(j).getMcqAnswers().get(o).getValue()%>">
+                                            
                                             <div  style="display: inline"><%= surveys.get(i).getMcqQuestions().get(j).getMcqAnswers().get(o).getValue()%></div>
                                             <br>
                                             <%
@@ -191,17 +207,41 @@
                                             }
 
                                             for (int j = 0; j < surveys.get(i).getCheckboxQuestions().size(); j++) {
+                                                
                                                 Answer a = new Answer();
                                                 surveys.get(i).getCheckboxQuestions().get(j).setCheckboxAnswers(a.getAnswer(surveys.get(i).getCheckboxQuestions().get(j).getId()));
-
+                                                SurveyAnswers SACheck = new SurveyAnswers();
+                                                ArrayList<String> checks = new ArrayList<String>(); 
+                                                checks  = SACheck.getCheckBoxes(currentUser.getId(),surveys.get(i).getCheckboxQuestions().get(j).getId());
+                                        
+                                                
+//                                                       for(int yy=0 ; yy<checks.size() ; yy++)
+//                                                       {
+//                                                          String g = checks.get(yy); 
+//                                                          out.print(g);
+//                                                       }
+                                                   
                                         %>
                                         <div class="alert alert-primary checkbox-<%= i%> checkbox-parent-question-<%= i%>-<%= j%>" data-questionid="<%= surveys.get(i).getCheckboxQuestions().get(j).getId()%>">
                                             <div style="font-weight: bold;" ><%= surveys.get(i).getCheckboxQuestions().get(j).getValue()%></div>
 
                                             <%
                                                 for (int o = 0; o < surveys.get(i).getCheckboxQuestions().get(j).getCheckboxAnswers().size(); o++) {
+                                                    String accutalAnswer = surveys.get(i).getCheckboxQuestions().get(j).getCheckboxAnswers().get(o).getValue();
                                             %>
-                                            <input type="checkbox" onclick="submitAnswer('<%= i%>')" class="checkbox-answer-<%= i%>-<%= j%>" id="checkbox-answer-<%= i%>-<%= j%>-<%= o%>" name="checkbox-answer-<%= j%>" value="<%= surveys.get(i).getCheckboxQuestions().get(j).getCheckboxAnswers().get(o).getValue()%>">
+                                            
+                                            <input type="checkbox"   
+                                                   <%
+                                                       for(int yy=0 ; yy<checks.size() ; yy++)
+                                                       {
+                                                           if(accutalAnswer.equals(surveys.get(i).getCheckboxQuestions().get(j).getCheckboxAnswers().get(yy).getValue())){
+                                                               out.print(" checked='true' ");
+                                                               break;
+                                                           }       
+                                                       }
+                                                   %>
+                                                   
+                                                   onclick="submitAnswer('<%= i%>')" class="checkbox-answer-<%= i%>-<%= j%>" id="checkbox-answer-<%= i%>-<%= j%>-<%= o%>" name="checkbox-answer-<%= j%>" value="<%= surveys.get(i).getCheckboxQuestions().get(j).getCheckboxAnswers().get(o).getValue()%>">
                                             <div style="display: inline;"><%= surveys.get(i).getCheckboxQuestions().get(j).getCheckboxAnswers().get(o).getValue()%></div>
                                             <br>
                                             <%
@@ -212,10 +252,19 @@
                                         <%
                                             }
                                             for (int j = 0; j < surveys.get(i).getFreeanswerQuestions().size(); j++) {
+                                            
+                                            SurveyAnswers SAA = new SurveyAnswers();
+                                            String expectedFreeAnswer; 
+                                            expectedFreeAnswer  = SAA.getAnswer(currentUser.getId(),surveys.get(i).getFreeanswerQuestions().get(j).getId());
                                         %>
                                         <div  class="alert alert-light freeanswer-parent-question-<%= i%>-<%= j%>" data-questionid="<%= surveys.get(i).getFreeanswerQuestions().get(j).getId()%>">
                                             <div  style="font-weight: bold;"><%= surveys.get(i).getFreeanswerQuestions().get(j).getValue()%></div>
-                                            <textarea onmouseleave="submitAnswer('<%= i%>')" class="freeAnswer-<%= i%> form-control freeanswer-<%= j%>" rows="2" id="freeanswer-answer-value0-<%= i%>-<%= j%>" name="freeanswer-answer-value-<%= i%>-<%= j%>" placeholder="Your Answer"></textarea>
+                                            <textarea onmouseleave="submitAnswer('<%= i%>')" class="freeAnswer-<%= i%> form-control freeanswer-<%= j%>" rows="2" id="freeanswer-answer-value0-<%= i%>-<%= j%>" name="freeanswer-answer-value-<%= i%>-<%= j%>" placeholder="Your Answer"><%
+                                                if(expectedFreeAnswer != null || !expectedFreeAnswer.equals(""))
+                                                {
+                                                    out.print(expectedFreeAnswer);
+                                                }
+                                            %></textarea>
                                             <input type="text" id="freeanswer-answer-value-<%= i%>-<%= j%>" name="freeanswer-answer-value1-<%= i%>-<%= j%>" hidden="true">
                                         </div>
                                         <%
@@ -253,19 +302,29 @@
                                             <button type="button" class="btn btn-warning" data-surveyid="<%= surveys.get(i).getId()%>" id="remove-survey-button-<%= i%>" onclick="remove('<%= i%>')" style="cursor: pointer;box-shadow: none; border-radius: 0px; margin: 0px;">Remove</button>
                                             <%}%>
 
-                                            <button type="button" class="btn btn-secondary" data-dismiss="modal" style="cursor: pointer;box-shadow: none; border-radius: 0px; margin: 0px;">Close</button>
                                             <%
                                                 if (!(surveys.get(i).getUserID().equals(currentUser.getId()))) {
                                             %>
-                                            <input type="submit" class="btn btn-primary" data-surveyid="<%= surveys.get(i).getId()%>" id="submit-survey-button-<%= i%>" onclick="submit('<%= i%>')"  value="Submit" style="cursor: pointer;box-shadow: none; border-radius: 0px; margin: 0px;">
-                                            <%}%>
+                                            
+                                            <%
+                                                SurveyCounter sc = new SurveyCounter();
+                                                if(!sc.checkIfSubumittedBefore(currentUser.getId(), surveys.get(i).getId())){
+                                                
+                                            %>
+                                            
+                                            <input type="submit" class="btn btn-primary" data-surveyid="<%= surveys.get(i).getId()%>" name="anonymous-<%= i%>" id="submit-survey-abutton-<%= i%>"  value="Submit As Annonynas" style="cursor: pointer;box-shadow: none; border-radius: 0px; margin: 0px;">
+                                            <input type="submit" class="btn btn-primary" data-surveyid="<%= surveys.get(i).getId()%>" name="submit-<%= i%>" id="submit-survey-button-<%= i%>"  value="Submit" style="cursor: pointer;box-shadow: none; border-radius: 0px; margin: 0px;">
+                                            <%}else{%>
+                                            
+                                            <input type="submit" class="btn btn-primary" data-surveyid="<%= surveys.get(i).getId()%>" name="anonymous-<%= i%>" id="submit-survey-abutton-<%= i%>"  onmouseenter="submitAnswer('<%= i%>')" value="Submit As Annonynas" style="cursor: pointer;box-shadow: none; border-radius: 0px; margin: 0px;">
+                                            <input type="submit" class="btn btn-primary" data-surveyid="<%= surveys.get(i).getId()%>" id="submit-survey-button-<%= i%>" name="update-<%= i%>" onmouseenter="submitAnswer('<%= i%>')"  value="Update" style="cursor: pointer;box-shadow: none; border-radius: 0px; margin: 0px;">
+                                            <%}}%>
                                         </div>
 
                                         <input type="text" hidden="true"  class="mcqHidden-<%= i%>" name="mcq-<%= i%>"/>
                                         <input type="text" hidden="true"  class="checkBoxHidden-<%= i%>" name="checkbox-<%= i%>"/>
                                         <input type="text" hidden="true"  class="freeAnswerHidden-<%= i%>" name="freeanswer-<%= i%>"/>
-
-
+                             
                                     </form>
 
                                 </div>
@@ -274,7 +333,7 @@
                         </div>
                     </div>
 
-                    <script type='text/javascript' src='jQuery.js'></script>
+                    
                     <%
                         if (surveys.get(i).getSuspend() == 1) {
                     %>
@@ -285,6 +344,7 @@
                                                 $("#survey-form-" + $id + " :checkbox").attr('disabled', 'true');
                                                 $("#survey-form-" + $id + " textarea").attr('disabled', 'true');
                                                 $('#submit-survey-button-' + $id).attr('disabled', 'true');
+                                                $('#submit-survey-abutton-' + $id).attr('disabled', 'true');
 
                     </script>
                     <%}%>

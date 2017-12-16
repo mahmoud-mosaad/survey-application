@@ -8,13 +8,14 @@ import java.sql.Statement;
 import java.util.ArrayList;
 
 public class SurveyAnswers {
+
     private String userID;
     private String surveyID;
     private String questionID;
     private String answer;
     private int count;
-    
-     DataBaseInfo db = new DataBaseInfo();
+
+    DataBaseInfo db = new DataBaseInfo();
 
     private final String CONNECT_STRING = db.getCONNECT_STRING();
     private final String URL = db.getDATABASE_URL();
@@ -66,20 +67,17 @@ public class SurveyAnswers {
     public void setCount(int count) {
         this.count = count;
     }
-    
-    
-    
-    private String x(String str)
-    {
-        return "'"+str+"'";
+
+    private String x(String str) {
+        return "'" + str + "'";
     }
-    
+
     public Boolean addAnswer(SurveyAnswers sa) {
         try {
             Class.forName(CONNECT_STRING);
             Connection conn = DriverManager.getConnection(this.URL, this.USER, this.PASS);
             Statement stmt = conn.createStatement();
-            stmt.executeUpdate("INSERT INTO " + TABLE_NAME + " VALUES(" + x(sa.getUserID())+comma+x(sa.getSurveyID())+comma+x(sa.getQuestionID())+comma+x(sa.getAnswer())+")");
+            stmt.executeUpdate("INSERT INTO " + TABLE_NAME + " VALUES(" + x(sa.getUserID()) + comma + x(sa.getSurveyID()) + comma + x(sa.getQuestionID()) + comma + x(sa.getAnswer()) + ")");
             stmt.close();
             conn.close();
             return true;
@@ -89,33 +87,78 @@ public class SurveyAnswers {
             System.err.println("-------------------------------------");
             return false;
         }
-        
+
     }
-    
-    
-    public ArrayList getAnsweredSurveysByCount() {
-        ArrayList<SurveyAnswers> surveysAnsered = new ArrayList<SurveyAnswers>();
+
+    public Boolean updateAnswer(SurveyAnswers sa) {
         try {
             Class.forName(CONNECT_STRING);
             Connection conn = DriverManager.getConnection(this.URL, this.USER, this.PASS);
             Statement stmt = conn.createStatement();
-            ResultSet rs = stmt.executeQuery("SELECT COUNT(DISTINCT surveyID) as count,surveyID,userID FROM user_answers GROUP BY surveyID");
+            stmt.executeUpdate("UPDATE " + TABLE_NAME + " SET answer=" + x(sa.getAnswer()) + " WHERE questionID=" + x(sa.getQuestionID()) + " AND userID=" + x(sa.getUserID()));
+            stmt.close();
+            conn.close();
+            return true;
+        } catch (Exception e) {
+            System.err.println("-------------------------------------");
+            System.err.println("error in updating surevey's answers" + e);
+            System.err.println("-------------------------------------");
+            return false;
+        }
+    }
+        
+        
+
+    public String getAnswer(String userID , String questionID) {
+        String answer="";
+        try {
+            Class.forName(CONNECT_STRING);
+            Connection conn = DriverManager.getConnection(this.URL, this.USER, this.PASS);
+            Statement stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT answer FROM " + TABLE_NAME + " where questionID = " + x(questionID) + " AND userID="+x(userID));
             while (rs.next()) {
-                SurveyAnswers ss = new SurveyAnswers();
-                ss.setUserID(rs.getString("userID"));
-                ss.setSurveyID(rs.getString("surveyID"));
-                ss.setCount(rs.getInt("count"));
-                surveysAnsered.add(ss);
+                answer = rs.getString("answer");
             }
-             rs.close();
+            rs.close();
             stmt.close();
             conn.close();
         } catch (Exception e) {
             System.err.println("-------------------------------------");
-            System.err.println("error in retrivnig spam counter surveys ansered  " + e);
+            System.err.println("error in getting answering " + e);
             System.err.println("-------------------------------------");
         }
-        return surveysAnsered;
+        return answer;
     }
     
+    
+    public ArrayList<String> getCheckBoxes(String userID , String questionID) {
+        String answer="";
+        ArrayList<String> answers = new ArrayList<String>();
+        try {
+            Class.forName(CONNECT_STRING);
+            Connection conn = DriverManager.getConnection(this.URL, this.USER, this.PASS);
+            Statement stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT * FROM " + TABLE_NAME + " where questionID = " + x(questionID) + " AND userID="+x(userID));
+            while (rs.next()) {
+                answer = rs.getString("answer");
+                answers.add(answer);
+            }
+            rs.close();
+            stmt.close();
+            conn.close();
+        } catch (Exception e) {
+            System.err.println("-------------------------------------");
+            System.err.println("error in getting answering " + e);
+            System.err.println("-------------------------------------");
+        }
+        System.out.println("*****************************");
+        for(int i=0 ; i<answers.size() ; i++)
+        {
+            System.out.println(answers.get(i));
+        }
+        System.out.println("*****************************");
+        return answers;
+    }
+
+
 }

@@ -1,10 +1,33 @@
-<%@page import="Model.Answer"%>
-<%@page import="Model.Question"%>
+<%@page import="Model.SurveyAnswers"%>
+<%@page import="Model.SurveyCounter"%>
 <%@page import="Model.Spam"%>
+<%@page import="Model.User"%>
+<%@page import="Model.Answer"%>
 <%@page import="java.util.ArrayList"%>
+<%@page import="Model.Question"%>
 <%@page import="Model.Survey"%>
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@page contentType='text/html' pageEncoding='UTF-8'%>
 <!DOCTYPE html>
+
+<%
+    Boolean ImAdmin = false;
+    Boolean ImAnnonimus = false;
+        
+        String surveyNumber = request.getParameter("spammedSurveyNumber");
+        
+        User currentUser = new User();
+        if(request.getParameter("useridd-"+surveyNumber) != null || !request.getParameter("useridd-"+surveyNumber).equals(""))
+        {currentUser = currentUser.getUserByID(request.getParameter("useridd-"+surveyNumber));}else{
+       currentUser.setId("sadada");}
+        Survey tmpSurvey = new Survey();
+        tmpSurvey.setId(request.getParameter("surveyID-"+surveyNumber));
+        tmpSurvey.setName(request.getParameter("surveyName-"+surveyNumber));
+        tmpSurvey.setUserID(request.getParameter("userID-"+surveyNumber));
+        ArrayList<Survey> surveys = new ArrayList<Survey>();
+        surveys.add(tmpSurvey);
+
+%>
+
 <html>
     <head>
         <meta http-equiv='Content-Type' content='text/html; charset=UTF-8'>
@@ -12,27 +35,39 @@
         <link rel='stylesheet' href='css\bootstrap.min.css'/>
         <link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css'/>
         <link rel='stylesheet' href='css\home.css'/>
-        <title>JSP Page</title>
+        <script type='text/javascript' src='jQuery.js'></script>
+        <title>Home</title>
     </head>
+
+
+
     <body>
-        <div class="card-columns custome-card-columns">
+
+
+        <%            
+            Spam spam1 = new Spam();
+            ArrayList<Spam> spamSurveys = new ArrayList<Spam>();
+            spamSurveys = spam1.getSpamedSurveysByCount();
+        %>
+
+       
+
+        <!--Start of Home Body-->
+
+        <div class="posts">
+            <div class="container-fluid">
+                <div class="card-columns custome-card-columns">
                     <%
                         Survey survey = new Survey();
                         Spam spam = new Spam();
-                        ArrayList<Survey> surveys = new ArrayList<Survey>();
+                        
+                        
                         ArrayList<Spam> spammedSurveys = new ArrayList<Spam>();
-                        survey.setId("e6763929a7c44a529438f4a673903d40");
-//                        survey.setName("min");
-                        survey.setUserID("8440c64388c04686b37d13650419da32");
-//                        survey.setSuspend(0);
-                        surveys.add(survey);
+//                        surveys = survey.getSurveys();
                         spammedSurveys = spam.getSpamedSurveys();
 
                         for (int i = 0; i < surveys.size(); i++) {
                     %>        
-
-
-
                     <div class="card bg-primary text-white text-center p-3" data-surveyid="<%= surveys.get(i).getId()%>"  name="survey-body-<%= i%>" id="survey-body-<%= i%>"
                          data-toggle="modal" data-target="#survey-model-<%= i%>" data-backdrop="static" style="cursor: pointer">
                         <div class="card-body">
@@ -60,6 +95,9 @@
                                             surveys.get(i).setFreeanswerQuestions(q.getQuestions(surveys.get(i).getId(), "freeanswer"));
                                             for (int j = 0; j < surveys.get(i).getMcqQuestions().size(); j++) {
                                                 Answer a = new Answer();
+                                                SurveyAnswers SA = new SurveyAnswers();
+                                                String expectedAnswer = SA.getAnswer(currentUser.getId(),surveys.get(i).getMcqQuestions().get(j).getId());
+                                                
                                                 surveys.get(i).getMcqQuestions().get(j).setMcqAnswers(a.getAnswer(surveys.get(i).getMcqQuestions().get(j).getId()));
 
                                         %>
@@ -67,9 +105,11 @@
                                             <div style="font-weight: bold;" ><%= surveys.get(i).getMcqQuestions().get(j).getValue()%></div>
                                             <%
                                                 for (int o = 0; o < surveys.get(i).getMcqQuestions().get(j).getMcqAnswers().size(); o++) {
+                                                    String actualAnswer = surveys.get(i).getMcqQuestions().get(j).getMcqAnswers().get(o).getValue();
+                                                
                                             %>
-                                            <input type="radio" onclick="submitAnswer('<%= i%>')" id="mcq-answer-<%= i%>-<%= j%>-<%= o%>" name="mcq-answer-<%= i%>-<%= j%>" value="<%= surveys.get(i).getMcqQuestions().get(j).getMcqAnswers().get(o).getValue()%>">
-
+                                            <input type="radio" <% if(expectedAnswer.equals(actualAnswer)){out.print("checked='true'");} %>  onclick="submitAnswer('<%= i%>')" id="mcq-answer-<%= i%>-<%= j%>-<%= o%>" name="mcq-answer-<%= i%>-<%= j%>" value="<%= surveys.get(i).getMcqQuestions().get(j).getMcqAnswers().get(o).getValue()%>">
+                                            
                                             <div  style="display: inline"><%= surveys.get(i).getMcqQuestions().get(j).getMcqAnswers().get(o).getValue()%></div>
                                             <br>
                                             <%
@@ -81,17 +121,41 @@
                                             }
 
                                             for (int j = 0; j < surveys.get(i).getCheckboxQuestions().size(); j++) {
+                                                
                                                 Answer a = new Answer();
                                                 surveys.get(i).getCheckboxQuestions().get(j).setCheckboxAnswers(a.getAnswer(surveys.get(i).getCheckboxQuestions().get(j).getId()));
-
+                                                SurveyAnswers SACheck = new SurveyAnswers();
+                                                ArrayList<String> checks = new ArrayList<String>(); 
+                                                checks  = SACheck.getCheckBoxes(currentUser.getId(),surveys.get(i).getCheckboxQuestions().get(j).getId());
+                                        
+                                                
+//                                                       for(int yy=0 ; yy<checks.size() ; yy++)
+//                                                       {
+//                                                          String g = checks.get(yy); 
+//                                                          out.print(g);
+//                                                       }
+                                                   
                                         %>
                                         <div class="alert alert-primary checkbox-<%= i%> checkbox-parent-question-<%= i%>-<%= j%>" data-questionid="<%= surveys.get(i).getCheckboxQuestions().get(j).getId()%>">
                                             <div style="font-weight: bold;" ><%= surveys.get(i).getCheckboxQuestions().get(j).getValue()%></div>
 
                                             <%
                                                 for (int o = 0; o < surveys.get(i).getCheckboxQuestions().get(j).getCheckboxAnswers().size(); o++) {
+                                                    String accutalAnswer = surveys.get(i).getCheckboxQuestions().get(j).getCheckboxAnswers().get(o).getValue();
                                             %>
-                                            <input type="checkbox" onclick="submitAnswer('<%= i%>')" class="checkbox-answer-<%= i%>-<%= j%>" id="checkbox-answer-<%= i%>-<%= j%>-<%= o%>" name="checkbox-answer-<%= j%>" value="<%= surveys.get(i).getCheckboxQuestions().get(j).getCheckboxAnswers().get(o).getValue()%>">
+                                            
+                                            <input type="checkbox"   
+                                                   <%
+                                                       for(int yy=0 ; yy<checks.size() ; yy++)
+                                                       {
+                                                           if(accutalAnswer.equals(surveys.get(i).getCheckboxQuestions().get(j).getCheckboxAnswers().get(yy).getValue())){
+                                                               out.print(" checked='true' ");
+                                                               break;
+                                                           }       
+                                                       }
+                                                   %>
+                                                   
+                                                   onclick="submitAnswer('<%= i%>')" class="checkbox-answer-<%= i%>-<%= j%>" id="checkbox-answer-<%= i%>-<%= j%>-<%= o%>" name="checkbox-answer-<%= j%>" value="<%= surveys.get(i).getCheckboxQuestions().get(j).getCheckboxAnswers().get(o).getValue()%>">
                                             <div style="display: inline;"><%= surveys.get(i).getCheckboxQuestions().get(j).getCheckboxAnswers().get(o).getValue()%></div>
                                             <br>
                                             <%
@@ -102,10 +166,19 @@
                                         <%
                                             }
                                             for (int j = 0; j < surveys.get(i).getFreeanswerQuestions().size(); j++) {
+                                            
+                                            SurveyAnswers SAA = new SurveyAnswers();
+                                            String expectedFreeAnswer; 
+                                            expectedFreeAnswer  = SAA.getAnswer(currentUser.getId(),surveys.get(i).getFreeanswerQuestions().get(j).getId());
                                         %>
                                         <div  class="alert alert-light freeanswer-parent-question-<%= i%>-<%= j%>" data-questionid="<%= surveys.get(i).getFreeanswerQuestions().get(j).getId()%>">
                                             <div  style="font-weight: bold;"><%= surveys.get(i).getFreeanswerQuestions().get(j).getValue()%></div>
-                                            <textarea onmouseleave="submitAnswer('<%= i%>')" class="freeAnswer-<%= i%> form-control freeanswer-<%= j%>" rows="2" id="freeanswer-answer-value0-<%= i%>-<%= j%>" name="freeanswer-answer-value-<%= i%>-<%= j%>" placeholder="Your Answer"></textarea>
+                                            <textarea onmouseleave="submitAnswer('<%= i%>')" class="freeAnswer-<%= i%> form-control freeanswer-<%= j%>" rows="2" id="freeanswer-answer-value0-<%= i%>-<%= j%>" name="freeanswer-answer-value-<%= i%>-<%= j%>" placeholder="Your Answer"><%
+                                                if(expectedFreeAnswer != null || !expectedFreeAnswer.equals(""))
+                                                {
+                                                    out.print(expectedFreeAnswer);
+                                                }
+                                            %></textarea>
                                             <input type="text" id="freeanswer-answer-value-<%= i%>-<%= j%>" name="freeanswer-answer-value1-<%= i%>-<%= j%>" hidden="true">
                                         </div>
                                         <%
@@ -117,57 +190,55 @@
                                         <div class="modal-footer">
 
                                             <%
-                                                if (!surveys.get(i).getUserID().equals("")) {
+                                                if (surveys.get(i).getUserID().equals(currentUser.getId()) == false) {
+                                                    
                                                     if (spammedSurveys.size() > 0) {
-                                                        for (int j = 0; j < spammedSurveys.size(); j++) {
-                                                            if (!spammedSurveys.get(j).getUserID().equals("")) {
-
-
+                                                           Spam checkSpammed = new Spam();
+                                                           if(checkSpammed.checkIfSpammed(currentUser.getId() , surveys.get(i).getId()) == false)
+                                                           {
                                             %>
-
-                                            <button type="button" class="btn btn-danger" data-surveyid="<%= surveys.get(i).getId()%>"  id="spam-survey-button-<%= i%>" onclick="spam('<%= i%>')" style="cursor: pointer; box-shadow: none;">Spam!</button>
-                                            <%}
-                                                }
-                                            } else {%>
-                                            <button type="button" class="btn btn-danger" data-surveyid="<%= surveys.get(i).getId()%>"  id="spam-survey-button-<%= i%>" onclick="spam('<%= i%>')" style="cursor: pointer; box-shadow: none;">Spam!</button>
+                                            <button type="button" class="btn btn-danger" data-surveyid="<%= surveys.get(i).getId()%>" data-userid="<%= currentUser.getId()%>" id="spam-survey-button-<%= i%>" onclick="spam('<%= i%>')" style="cursor: pointer; box-shadow: none; border-radius: 0px; margin: 0px;">Spam!</button>        
                                             <%
-
-                                                    }
-                                                }%>
-
-
-
-
-
-
-
-
-
-
-
-
-
+                                                           }
+                                                    }else
+                                                    {
+                                            %>            
+                                            <button type="button" class="btn btn-danger" data-surveyid="<%= surveys.get(i).getId()%>" data-userid="<%= currentUser.getId()%>" id="spam-survey-button-<%= i%>" onclick="spam('<%= i%>')" style="cursor: pointer; box-shadow: none; border-radius: 0px; margin: 0px;">Spam!</button>
+                                                       
+                                                        
+                                                    <%}%>
+                                            <%}%>
                                             <%
-                                                if ((surveys.get(i).getUserID().equals(""))) {
+                                                if ((surveys.get(i).getUserID().equals(currentUser.getId())) || (currentUser.getType() == 1)) {
                                             %>
-                                            <button type="button" class="btn btn-danger" data-surveyid="<%= surveys.get(i).getId()%>" id="suspend-survey-button-<%= i%>" onclick="suspend('<%= i%>')" style="cursor: pointer;box-shadow: none;">Suspend</button>
+                                            <button type="button" class="btn btn-danger" data-surveyid="<%= surveys.get(i).getId()%>" id="suspend-survey-button-<%= i%>" onclick="suspend('<%= i%>')" style="cursor: pointer;box-shadow: none; border-radius: 0px; margin: 0px;">Suspend</button>
 
-                                            <button type="button" class="btn btn-warning" data-surveyid="<%= surveys.get(i).getId()%>" id="remove-survey-button-<%= i%>" onclick="remove('<%= i%>')" style="cursor: pointer;box-shadow: none;">Remove</button>
+                                            <button type="button" class="btn btn-warning" data-surveyid="<%= surveys.get(i).getId()%>" id="remove-survey-button-<%= i%>" onclick="removee('<%= i%>')" style="cursor: pointer;box-shadow: none; border-radius: 0px; margin: 0px;">Remove</button>
                                             <%}%>
 
-                                            <button type="button" class="btn btn-secondary" data-dismiss="modal" style="cursor: pointer;box-shadow: none;">Close</button>
                                             <%
-                                                if (!(surveys.get(i).getUserID().equals(""))) {
+                                                if (!(surveys.get(i).getUserID().equals(currentUser.getId()))) {
                                             %>
-                                            <input type="submit" class="btn btn-primary" data-surveyid="<%= surveys.get(i).getId()%>" id="submit-survey-button-<%= i%>" onclick="submit('<%= i%>')"  value="Submit" style="cursor: pointer;box-shadow: none;">
-                                            <%}%>
+                                            
+                                            <%
+                                                SurveyCounter sc = new SurveyCounter();
+                                                if(!sc.checkIfSubumittedBefore(currentUser.getId(), surveys.get(i).getId())){
+                                                
+                                            %>
+                                            
+                                            <input type="submit" class="btn btn-primary" data-surveyid="<%= surveys.get(i).getId()%>" name="anonymous-<%= i%>" id="submit-survey-abutton-<%= i%>"  value="Submit As Annonynas" style="cursor: pointer;box-shadow: none; border-radius: 0px; margin: 0px;">
+                                            <input type="submit" class="btn btn-primary" data-surveyid="<%= surveys.get(i).getId()%>" name="submit-<%= i%>" id="submit-survey-button-<%= i%>"  value="Submit" style="cursor: pointer;box-shadow: none; border-radius: 0px; margin: 0px;">
+                                            <%}else{%>
+                                            
+                                            <input type="submit" class="btn btn-primary" data-surveyid="<%= surveys.get(i).getId()%>" name="anonymous-<%= i%>" id="submit-survey-abutton-<%= i%>"  onmouseenter="submitAnswer('<%= i%>')" value="Submit As Annonynas" style="cursor: pointer;box-shadow: none; border-radius: 0px; margin: 0px;">
+                                            <input type="submit" class="btn btn-primary" data-surveyid="<%= surveys.get(i).getId()%>" id="submit-survey-button-<%= i%>" name="update-<%= i%>" onmouseenter="submitAnswer('<%= i%>')"  value="Update" style="cursor: pointer;box-shadow: none; border-radius: 0px; margin: 0px;">
+                                            <%}}%>
                                         </div>
 
                                         <input type="text" hidden="true"  class="mcqHidden-<%= i%>" name="mcq-<%= i%>"/>
                                         <input type="text" hidden="true"  class="checkBoxHidden-<%= i%>" name="checkbox-<%= i%>"/>
                                         <input type="text" hidden="true"  class="freeAnswerHidden-<%= i%>" name="freeanswer-<%= i%>"/>
-
-
+                             
                                     </form>
 
                                 </div>
@@ -176,7 +247,7 @@
                         </div>
                     </div>
 
-                    <script type='text/javascript' src='jQuery.js'></script>
+                    
                     <%
                         if (surveys.get(i).getSuspend() == 1) {
                     %>
@@ -187,6 +258,7 @@
                                                 $("#survey-form-" + $id + " :checkbox").attr('disabled', 'true');
                                                 $("#survey-form-" + $id + " textarea").attr('disabled', 'true');
                                                 $('#submit-survey-button-' + $id).attr('disabled', 'true');
+                                                $('#submit-survey-abutton-' + $id).attr('disabled', 'true');
 
                     </script>
                     <%}%>
@@ -198,10 +270,13 @@
                     <!--End of Home Body-->
 
                 </div>
-    </body>
-    
-    
-    <script type='text/javascript' src='popper.js'></script>
+     
+            </div>
+        </div>
+
+
+        <script type='text/javascript' src='popper.js'></script>
         <script type='text/javascript' src='bootstrap.js'></script>
         <script type='text/javascript' src='home.js'></script>
+    </body>
 </html>

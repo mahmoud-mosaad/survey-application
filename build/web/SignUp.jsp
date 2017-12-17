@@ -1,12 +1,12 @@
 <%@page import="Model.User"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
-  <%
-        session = request.getSession(false);
-        if (session.getAttribute("currentUser") != null) {
-            response.sendRedirect("HomePage.jsp");
-        } else {
-    %>
+<%
+    session = request.getSession(false);
+    if (session.getAttribute("currentUser") != null) {
+        response.sendRedirect("HomePage.jsp");
+    } else {
+%>
 
 <html>
     <head>
@@ -16,8 +16,7 @@
         <link rel="stylesheet" href="css\signUp.css"/>
         <title>Sign-UP</title>
     </head>
-  
-
+    
     <body class="Sign_Up">
         <div class="test"></div>
         <form action="SignUp" method="POST" class="Sign_Up_Form">
@@ -63,17 +62,14 @@
                 <input type="text" name="gender" id="userGender" hidden>
                 <small id="genderAuth" class="form-text invalid-feedback error"></small>
             </div>
-            
+
             <input id="sign_up_button" type="submit" class="btn btn-primary Sign_Up_Button" value="SIGN UP"/>
             <button id="sign_in_button" onclick="window.location.href = 'SignIn.jsp'" type="button" class="btn btn-danger Sign_In_Button">SIGN IN</button>
             <div class="clear"></div>
         </form>
 
-
-
-
-        <script type="text/javascript" src="jQuery.js"></script>
-        <script type="text/javascript" src="signUp.js"></script>
+        <script type="text/javascript" src="js\jQuery.js"></script>
+        <script type="text/javascript" src="js\signUp.js"></script>
 
     </body>
 

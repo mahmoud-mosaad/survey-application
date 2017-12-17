@@ -11,16 +11,28 @@
 
 <%
     User currentUser = new User();
+    String surveyNumber = request.getParameter("spammedSurveyNumber");
+    
+    Boolean userPanel=false;
+    
     if(session.getAttribute("currentUser") != null)
     {
         session = request.getSession(false);
         currentUser = (User) session.getAttribute("currentUser");
-    }else
-    {
+        System.out.print("session user");
+    } 
+    
+    if(request.getParameter("uuser-"+surveyNumber) != null){
+        userPanel=true;
+        currentUser.setId(request.getParameter("uuser-"+surveyNumber));
+        System.out.print("custome user");
+    }
+    else{
+        System.out.print("annonymas user");
         currentUser.setId("anonymous");
     }
     
-    String surveyNumber = request.getParameter("spammedSurveyNumber");
+    
 
     Survey tmpSurvey = new Survey();
     tmpSurvey = tmpSurvey.getSurvey(request.getParameter("surveyID-" + surveyNumber));
@@ -149,7 +161,7 @@
                                             <input type="checkbox"   
                                                    <%
                                                        for (int yy = 0; yy < checks.size(); yy++) {
-                                                           if (accutalAnswer.equals(surveys.get(i).getCheckboxQuestions().get(j).getCheckboxAnswers().get(yy).getValue())) {
+                                                           if (accutalAnswer.equals(checks.get(yy))) {
                                                                out.print(" checked='true' ");
                                                                break;
                                                            }
@@ -186,7 +198,7 @@
                                         %>
 
 
-
+<%if(userPanel==false){%>
                                         <div class="modal-footer">
 
                                             
@@ -248,7 +260,7 @@
 <%
 }%>
                                         </div>
-
+<%}%>
                                         <input type="text" hidden="true"  class="mcqHidden-<%= i%>" name="mcq-<%= i%>"/>
                                         <input type="text" hidden="true"  class="checkBoxHidden-<%= i%>" name="checkbox-<%= i%>"/>
                                         <input type="text" hidden="true"  class="freeAnswerHidden-<%= i%>" name="freeanswer-<%= i%>"/>

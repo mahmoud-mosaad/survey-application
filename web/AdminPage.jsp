@@ -162,13 +162,11 @@
                 <th id="user-table-head-row"><%= users.get(i).getAge()%></th>
                 <th id="user-table-head-row"><%= users.get(i).getType()%></th>
                 <th id="user-table-head-row">
-                    <div class="input-group">
-                    
+                    <div class="input-group">                    
                         <input type="text" class="form-control" onmouseout="mm(<%= i%>)"  placeholder="Send the reason of suspend" id="admin-suspend-msg-<%= i%>">
                     <button id="admin-suspend-button-<%= i%>"  onclick="suspendManager('<%= 1 - users.get(i).isSuspended()%>', <%= i%>, '<%= users.get(i).getEmail()%>')" type="button" class="btn btn-danger" style="cursor: pointer; box-shadow: none; border-radius: 0px"><%if (users.get(i).isSuspended() == 0) {out.print("Suspend");}else {out.print("Undo");}%></button>
                     </div>
                 </th>
-
                 <th id="user-table-head-row">
                     <%
                         if (users.get(i).getState() == 0) {
@@ -177,9 +175,7 @@
                             out.print("<span style='color:#11e711'>online</span>");
                         }
                     %>
-
                 </th>
-
                 <th id="user-table-head-row">
                     <button id="make-admin-button-<%= i%>"
                             
@@ -189,9 +185,7 @@
                                     out.print(" disabled='true' ");
                                 }
                             %>
-                            
-                            onclick="makeAdmin('<%= 1 - users.get(i).getType()%>', this.id, '<%= users.get(i).getEmail()%>')" type="button" class="btn btn-danger" style="cursor: pointer; box-shadow: none">
-
+                                                        onclick="makeAdmin('<%= 1 - users.get(i).getType()%>', this.id, '<%= users.get(i).getEmail()%>')" type="button" class="btn btn-danger" style="cursor: pointer; box-shadow: none">
                         <%
                             if (users.get(i).getType() == 0) {
                                 out.print("Make Admin");
@@ -201,24 +195,17 @@
                         %>
                     </button>
                 </th>
-
                 <th id="user-table-head-row">
                     <div class="form-group form-inline" style="margin: auto;">
                         <input type="text" class="form-control" required="true" name="" id="admin-msg-<%= i%>"  placeholder="Enter your Msg here" style="border-radius: 0px;">
                         <button  class="btn btn-primary" onclick="sendMsg('<%= users.get(i).getEmail()%>', '<%= i%>', '<%= users.get(i).getId()%>')" id="change-password-button" style="border-radius: 0px; box-shadow: none">Go</button>
                     </div>
                 </th>
-
-
             </tr>
-
-
 
             <%}}%>
 
         </table>
-
-
 
         <script type='text/javascript' src='popper.js'></script>
         <script type='text/javascript' src='bootstrap.js'></script>

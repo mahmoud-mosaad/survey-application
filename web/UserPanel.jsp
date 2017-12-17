@@ -54,21 +54,21 @@
                     </li>
 
                     <li class='nav-item active'>
-                        
+
                         <a class='nav-link' data-toggle="tooltip" title="my Panel" href='UserPanel.jsp'>My Panel</a>
                     </li>
                     <%
-                        if(currentUser.getType()==1){
+                        if (currentUser.getType() == 1) {
                     %>
                     <li class='nav-item'>
                         <a class='nav-link' data-toggle="tooltip" title="my Panel" href='AdminPage.jsp'>Admin Panel</a>
                     </li>
-                    
+
                     <%}%>
-                    
-                    
-                    
-                     <%
+
+
+
+                    <%
                         if (currentUser.getType() == 1) {
                     %>
                     <li class='nav-item dropdown'>
@@ -94,7 +94,7 @@
                                         <form action="Survey.jsp?spammedSurveyNumber=<%= ii%>" method="POST">
                                             <input class='dropdown-item' type="submit" data-surveyid="<%= spamSurveys.get(ii).getSurveyID()%>" value="<%=survey.getName()%>"/>   
                                             <input name='surveyID-<%= ii%>' value="<%= spamSurveys.get(ii).getSurveyID()%>" type="text" hidden="true"/>
-                                            
+
                                         </form>
                                     </th>
                                     <th style="text-align: center;"><%= spamSurveys.get(ii).getSpamCount()%></th>
@@ -107,7 +107,7 @@
                         </div>
                     </li>
                     <%}%>
-                    
+
                 </ul>
                 <form action="SignOut" method="POST">
                     <input class="btn btn-outline-secondary sign-out-button" style="box-shadow:none;" type="submit" value="Sign-Out">
@@ -127,80 +127,88 @@
                 ArrayList<Survey> surveys = new ArrayList<Survey>();
                 surveys = s.getSurveys();
                 surveyCounters = sc.getSubmitedSurvey();
-                for(int i=0 ; i<surveys.size() ; i++)
-                {
-                    int ii=0;
-                    if(surveys.get(i).getUserID().equals(currentUser.getId()))
-                    {
+                for (int i = 0; i < surveys.size(); i++) {
+                    int ii = 0;
+                    if (surveys.get(i).getUserID().equals(currentUser.getId())) {
                         sc = sc.getSingleSubmitedSurveysCount(surveys.get(i).getId());
-                        
+
             %>
 
-            
+
             <div class="card">
-                
+
                 <div class="card-header row" role="tab" id="" style=" padding: 0px;">
-                    
+
                     <div class="col-lg-11" style=" margin: 10px 0px;">
-                    <h5 class="mb-0 collapse">
-                        Name of survey:
-                        <a data-toggle="collapse" href="#collapseOne-<%=i%>" aria-expanded="true" aria-controls="collapseOne">
-                              <span style="color:blue"> <%= surveys.get(i).getName()%> </span>
-                        </a>
-                        
-                        <span style="font-size: 11px; margin-left: 9px">   http://localhost:8080/survey-application/Survey.jsp?spammedSurveyNumber=<%= i%>&surveyID-<%= i%>=<%=surveys.get(i).getId()%></span>
-                        
-                        <span class="float-right" >
-                            
-                            # of submission: <span style="color:blue"> <%= sc.getSubmitedSurveyCount()%></span>
-                            
-                        </span> 
-                    </h5>
+                        <h5 class="mb-0 collapse">
+                            Name of survey:
+                            <a data-toggle="collapse" href="#collapseOne-<%=i%>" aria-expanded="true" aria-controls="collapseOne">
+                                <span style="color:blue"> <%= surveys.get(i).getName()%> </span>
+                            </a>
+
+                            <span style="font-size: 11px; margin-left: 9px">   http://localhost:8080/survey-application/Survey.jsp?spammedSurveyNumber=<%= i%>&surveyID-<%= i%>=<%=surveys.get(i).getId()%></span>
+
+                            <span class="float-right" >
+
+                                # of submission: <span style="color:blue"> <%= sc.getSubmitedSurveyCount()%></span>
+
+                            </span> 
+                        </h5>
                     </div>
-                            <div class="col-lg-1 btn btn-primary custome-button" onclick="suspend('<%= i%>')" id="suspend-survey-button-<%= i%>" data-surveyid="<%= surveys.get(i).getId()%>"><span>Suspend</span></div>
+                    <div class="col-lg-1 btn btn-primary custome-button" onclick="suspend('<%= i%>')" id="suspend-survey-button-<%= i%>" data-surveyid="<%= surveys.get(i).getId()%>"><span>Suspend</span></div>
                 </div>
 
                 <div id="collapseOne-<%=i%>" class="collapse show" role="tabpanel" aria-labelledby="headingOne" data-parent="#accordion">
                     <div class="card-body">
                         <table class="padding display-inline">
-                            
+
                             <tr id="table-row">
                                 <th id="table-head">#</th>
                                 <th id="table-head">User-Name</th>
                                 <th id="table-head">Age</th>
                                 <th id="table-head">Gender</th>
                             </tr>
-                            
+
                             <%
-                                for(int h=0 ; h<surveyCounters.size() ; h++)
-                                {
-                                    
-                                    if(surveyCounters.get(h).getSurevyID().equals(surveys.get(i).getId()))
-                                    {
-                                        
-                                    User user = new User();
-                                    if(!surveyCounters.get(h).getUserID().equals("anonymous")){
-                                    user = user.getUserByID(surveyCounters.get(h).getUserID());
-                                    
-                                
+                                for (int h = 0; h < surveyCounters.size(); h++) {
+
+                                    if (surveyCounters.get(h).getSurevyID().equals(surveys.get(i).getId())) {
+
+                                        User user = new User();
+                                        if (!surveyCounters.get(h).getUserID().equals("anonymous")) {
+                                            user = user.getUserByID(surveyCounters.get(h).getUserID());
+
+
                             %>
                             <tr>
                                 <th id="table-head"><%= ++ii%></th>
-                                <th id="table-head"><%= user.getName()%></th>
+                                <th id="table-head">
+                                    
+
+                                    <form action="Survey.jsp?spammedSurveyNumber=<%= h%>" method="POST">
+                                        <input class='dropdown-item' type="submit" value="<%= user.getName()%>"/>   
+                                        <input name='surveyID-<%= h%>' value="<%= surveys.get(i).getId()%>" type="text" hidden="true"/>
+                                        <input name='uuser-<%= h%>' value="<%= user.getId()%>" type="text" hidden="true"/>
+                                    </form>
+
+                                </th>
                                 <th id="table-head"><%= user.getAge()%></th>
                                 <th id="table-head"><%= user.getGender()%></th>
                             </tr>
-                            
-                            <%}}}%>
-                            
+
+                            <%}
+                                    }
+                                }%>
+
                         </table>
-                            <img src="http://via.placeholder.com/500x150" class="img" style="vertical-align: top;">
+                        <img src="http://via.placeholder.com/500x150" class="img" style="vertical-align: top;">
                         <!--<div class="padding display-inline"></div>-->
                     </div>
                 </div>
             </div>
 
-            <%}}%>
+            <%}
+                }%>
 
         </div>
 

@@ -152,7 +152,7 @@
 
 
 
-                    <div onclick="disablebtn('<%= i%>')" class="card bg-primary text-white text-center p-3" data-surveyid="<%= surveys.get(i).getId()%>"  name="survey-body-<%= i%>" id="survey-body-<%= i%>"
+                    <div  class="card bg-primary text-white text-center p-3" data-surveyid="<%= surveys.get(i).getId()%>"  name="survey-body-<%= i%>" id="survey-body-<%= i%>"
                          data-toggle="modal" data-target="#survey-model-<%= i%>" data-backdrop="static" style="cursor: pointer">
                         <div class="card-body">
                             <h4 class="card-title"><%= surveys.get(i).getName()%></h4>
@@ -238,7 +238,7 @@
                                                    <%
                                                        for(int yy=0 ; yy<checks.size() ; yy++)
                                                        {
-                                                           if(accutalAnswer.equals(surveys.get(i).getCheckboxQuestions().get(j).getCheckboxAnswers().get(yy).getValue())){
+                                                           if(accutalAnswer.equals(checks.get(yy))){
                                                                out.print(" checked='true' ");
                                                                break;
                                                            }       
@@ -316,7 +316,7 @@
                                                 
                                             %>
                                             
-                                            <input type="submit" class="btn btn-primary" data-surveyid="<%= surveys.get(i).getId()%>" name="anonymous-<%= i%>" id="submit-survey-abutton-<%= i%>"  value="As Annonynas" style="cursor: pointer;box-shadow: none; border-radius: 0px; margin: 0px;">
+                                            <input type="submit" class="btn btn-primary" data-surveyid="<%= surveys.get(i).getId()%>" name="anonymous-<%= i%>" id="submit-survey-abutton-<%= i%>"  value="As lik Annonynas" style="cursor: pointer;box-shadow: none; border-radius: 0px; margin: 0px;">
                                             <input type="submit" class="btn btn-primary" data-surveyid="<%= surveys.get(i).getId()%>" name="submit-<%= i%>" id="submit-survey-button-<%= i%>"  value="Submit" style="cursor: pointer;box-shadow: none; border-radius: 0px; margin: 0px;">
                                             <%}else{%>
                                             
@@ -360,34 +360,7 @@
                     <!--End of Home Body-->
 
                 </div>
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
+                          
             </div>
         </div>
 

@@ -54,12 +54,18 @@ function addRadioButton(id)
             '</span>' +
             '<input type="text" name="mcq-number-' + id + '-' + subAnswerID + '" placeholder="Write Answer Here" class="form-control" aria-label="Text input with radio button">' +
             '<span class="input-group-btn">' +
-            '<button class="btn btn-secondary" type="button" id="mcq-answer" onclick="deleteMCQAnswer(this.id)">delete</button>' +
+            '<button class="btn btn-secondary" type="button" id="mcq-delete-answer-btn-'+id+'" onclick="deleteMCQAnswer('+id+')">delete</button>' +
             '</span>' +
             '</div>' +
             '</div>';
     return answer;
 
+}
+
+function deleteMCQAnswer($id)
+{
+    console.log("hhhhhhhhhhhhhhhhhhhhhhh");
+    $(".mcq-answer-number-"+$id).remove();
 }
 
 function checkBoxHTMLBody(checkboxCounter)
@@ -94,11 +100,16 @@ function addCheckBox(id)
             '</span>' +
             '<input type="text" name="checkbox-answer-' + id + '-' + subAnswerID + '" placeholder="Write Answer Here" class="form-control" aria-label="Text input with radio button">' +
             '<span class="input-group-btn">' +
-            '<button class="btn btn-primary" type="button" id="mcq-answer" onclick="deleteCheckBoxAnswer(this.id)">delete</button>' +
+            '<button class="btn btn-primary" type="button" id="mcq-answer" onclick="deleteCheckBoxAnswer('+id+')">delete</button>' +
             '</span>' +
             '</div>' +
             '</div>';
     return answer;
+}
+
+function deleteCheckBoxAnswer($id)
+{
+    $(".checkbox-answer-number-"+$id).remove();
 }
 
 $('#free-question').on('click', function ()
@@ -135,10 +146,7 @@ function deleteMCQQuestion(id)
     $(parentClass).remove();
 }
 
-function deleteMCQAnswer(id)
-{
-    console.log($(id).closest("div").remove());
-}
+
 
 function addCheckBoxAnswer(id)
 {

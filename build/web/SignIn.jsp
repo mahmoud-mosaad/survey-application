@@ -61,7 +61,7 @@
         </div>
 
         <%}%>
-        <script type="text/javascript" src="jQuery.js"></script>
-        <script type="text/javascript" src="signIn.js"></script>
+        <script type="text/javascript" src="js\jQuery.js"></script>
+        <script type="text/javascript" src="js\signIn.js"></script>
     </body>
 </html>

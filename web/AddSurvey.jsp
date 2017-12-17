@@ -61,10 +61,10 @@
         </form>
 
 
-        <script type='text/javascript' src='jQuery.js'></script>
-        <script type='text/javascript' src='popper.js'></script>
-        <script type='text/javascript' src='bootstrap.js'></script>
-        <script type="text/javascript" src="AddSurvey.js"></script>
+        <script type='text/javascript' src='js\jQuery.js'></script>
+        <script type='text/javascript' src='js\popper.js'></script>
+        <script type='text/javascript' src='js\bootstrap.js'></script>
+        <script type="text/javascript" src="js\AddSurvey.js"></script>
     </body>
     
     <%}}%>

@@ -208,9 +208,9 @@
 
         <!-- Profile End -->
         <%}%>
-        <script type='text/javascript' src='jQuery.js'></script>
-        <script type='text/javascript' src='popper.js'></script>
-        <script type='text/javascript' src='bootstrap.js'></script>
-        <script type='text/javascript' src='profile.js'></script>
+        <script type='text/javascript' src='js\jQuery.js'></script>
+        <script type='text/javascript' src='js\popper.js'></script>
+        <script type='text/javascript' src='js\bootstrap.js'></script>
+        <script type='text/javascript' src='js\profile.js'></script>
     </body>
 </html>

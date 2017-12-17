@@ -238,9 +238,7 @@ public final class HomePage_jsp extends org.apache.jasper.runtime.HttpJspBase
       out.write("\r\n");
       out.write("\r\n");
       out.write("\r\n");
-      out.write("                    <div onclick=\"disablebtn('");
-      out.print( i);
-      out.write("')\" class=\"card bg-primary text-white text-center p-3\" data-surveyid=\"");
+      out.write("                    <div  class=\"card bg-primary text-white text-center p-3\" data-surveyid=\"");
       out.print( surveys.get(i).getId());
       out.write("\"  name=\"survey-body-");
       out.print( i);
@@ -415,7 +413,7 @@ if(surveys.get(i).getUserID().equals(currentUser.getId())){
 
                                                        for(int yy=0 ; yy<checks.size() ; yy++)
                                                        {
-                                                           if(accutalAnswer.equals(surveys.get(i).getCheckboxQuestions().get(j).getCheckboxAnswers().get(yy).getValue())){
+                                                           if(accutalAnswer.equals(checks.get(yy))){
                                                                out.print(" checked='true' ");
                                                                break;
                                                            }       
@@ -608,7 +606,7 @@ if(surveys.get(i).getUserID().equals(currentUser.getId())){
       out.print( i);
       out.write("\" id=\"submit-survey-abutton-");
       out.print( i);
-      out.write("\"  value=\"As Annonynas\" style=\"cursor: pointer;box-shadow: none; border-radius: 0px; margin: 0px;\">\r\n");
+      out.write("\"  value=\"As lik Annonynas\" style=\"cursor: pointer;box-shadow: none; border-radius: 0px; margin: 0px;\">\r\n");
       out.write("                                            <input type=\"submit\" class=\"btn btn-primary\" data-surveyid=\"");
       out.print( surveys.get(i).getId());
       out.write("\" name=\"submit-");
@@ -698,34 +696,7 @@ if(surveys.get(i).getUserID().equals(currentUser.getId())){
       out.write("                    <!--End of Home Body-->\r\n");
       out.write("\r\n");
       out.write("                </div>\r\n");
-      out.write("                    \r\n");
-      out.write("                    \r\n");
-      out.write("                    \r\n");
-      out.write("                    \r\n");
-      out.write("                    \r\n");
-      out.write("                    \r\n");
-      out.write("                    \r\n");
-      out.write("                    \r\n");
-      out.write("                    \r\n");
-      out.write("                    \r\n");
-      out.write("                    \r\n");
-      out.write("                    \r\n");
-      out.write("                    \r\n");
-      out.write("                    \r\n");
-      out.write("                    \r\n");
-      out.write("                    \r\n");
-      out.write("                    \r\n");
-      out.write("                    \r\n");
-      out.write("                    \r\n");
-      out.write("                    \r\n");
-      out.write("                    \r\n");
-      out.write("                    \r\n");
-      out.write("                    \r\n");
-      out.write("                    \r\n");
-      out.write("                    \r\n");
-      out.write("                    \r\n");
-      out.write("                    \r\n");
-      out.write("                    \r\n");
+      out.write("                          \r\n");
       out.write("            </div>\r\n");
       out.write("        </div>\r\n");
       out.write("\r\n");

@@ -167,5 +167,67 @@ public class SurveyCounter {
         return false;
     }
     
+    public int getAnonymousCount(String surveyID){
+        int rr = 0;
+        try {
+            Class.forName(CONNECT_STRING);
+            Connection conn = DriverManager.getConnection(this.URL, this.USER, this.PASS);
+            Statement stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT surveyID, count(userID) as Count FROM " + TABLE_NAME + " where surveyID="+x(surveyID)+ "and userID='anonymous' group by surveyID" );
+            while (rs.next()) {
+                rr = rs.getInt("Count");
+            }
+            rs.close();
+            stmt.close();
+            conn.close();
+        } catch (Exception e) {
+            System.err.println("-------------------------------------");
+            System.err.println("error in retrivnig anonymous count   " + e);
+            System.err.println("-------------------------------------");
+        }
+        return rr;
+    }
+    
+    public int getMalesCount(String surveyID){
+        int rr = 0;
+        try {
+            Class.forName(CONNECT_STRING);
+            Connection conn = DriverManager.getConnection(this.URL, this.USER, this.PASS);
+            Statement stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT surveyID, count(userID) as Count FROM " + TABLE_NAME + " join user on user.id = survey_counter.userID where surveyID="+x(surveyID)+ " and gender='male' group by surveyID" );
+            while (rs.next()) {
+                rr = rs.getInt("Count");
+            }
+            rs.close();
+            stmt.close();
+            conn.close();
+        } catch (Exception e) {
+            System.err.println("-------------------------------------");
+            System.err.println("error in retrivnig anonymous count   " + e);
+            System.err.println("-------------------------------------");
+        }
+        return rr;
+    }
+    
+    public int getFemalesCount(String surveyID){
+        int rr = 0;
+        try {
+            Class.forName(CONNECT_STRING);
+            Connection conn = DriverManager.getConnection(this.URL, this.USER, this.PASS);
+            Statement stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT surveyID, count(userID) as Count FROM " + TABLE_NAME + " join user on user.id = survey_counter.userID where surveyID="+x(surveyID)+ " and gender='female' group by surveyID" );
+            while (rs.next()) {
+                rr = rs.getInt("Count");
+            }
+            rs.close();
+            stmt.close();
+            conn.close();
+        } catch (Exception e) {
+            System.err.println("-------------------------------------");
+            System.err.println("error in retrivnig anonymous count   " + e);
+            System.err.println("-------------------------------------");
+        }
+        return rr;
+    }
     
 }

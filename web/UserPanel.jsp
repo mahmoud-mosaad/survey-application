@@ -134,10 +134,14 @@
 
             %>
 
-
             <div class="card">
-
-                <div class="card-header row" role="tab" id="" style=" padding: 0px;">
+                <%
+                    int anonymous = sc1.getAnonymousCount(surveys.get(i).getId());
+                    int males = sc1.getMalesCount(surveys.get(i).getId());
+                    int females = sc1.getFemalesCount(surveys.get(i).getId());
+                    
+                %>
+                <div class="card-header row" onclick="charts(<%= i%>,<%=males%>,<%=females%>,<%=anonymous%>)" role="tab" id="" style=" padding: 0px;" >
 
                     <div class="col-lg-11" style=" margin: 10px 0px;">
                         <h5 class="mb-0 collapse">
@@ -201,8 +205,11 @@
                                 }%>
 
                         </table>
-                        <img src="http://via.placeholder.com/500x150" class="img" style="vertical-align: top;">
+                        <!--<img src="http://via.placeholder.com/500x150" class="img" style="vertical-align: top;">-->
                         <!--<div class="padding display-inline"></div>-->
+                        
+                        <div id="chart_div_<%= i%>" style="display:inline"></div>
+                        
                     </div>
                 </div>
             </div>
@@ -220,6 +227,7 @@
         <script type='text/javascript' src='js\jQuery.js'></script>
         <script type='text/javascript' src='js\popper.js'></script>
         <script type='text/javascript' src='js\bootstrap.js'></script>
+        <script type="text/javascript" src="js\loader.js"></script>
         <script type='text/javascript' src='js\userPanel.js'></script>
     </body>
 </html>

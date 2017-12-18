@@ -21,8 +21,10 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <link rel="stylesheet" href="css\bootstrap.min.css"/>
         <link rel="stylesheet" href="css\AddSurevy.css"/>
+        <script type='text/javascript' src='js\jQuery.js'></script>
     </head>
     <body>
+        <div class="alert alert-danger add-survey-alert" hidden="true">please don't</div>
         <form action="AddSurvey" method="POST" class="" id='Surevy_Form'>
             <div class="row">
                 <div class="col-lg-2 Add_Surevy_Form1">
@@ -53,15 +55,15 @@
                     <input type="text" hidden="true" name="mcq" class="mcqHidden"/>
                     <input type="text" hidden="true" name="checkBox" class="checkBoxHidden"/>
                     <input type="text" hidden="true" name="freeAnswer" class="freeAnswerHidden"/>
-                    <input type='submit' class='btn btn-primary right-float' value="SAVE" id='survey-submit-button'>
-                    <button class='btn btn-secondary right-float' onclick="location.href = 'HomePage.jsp';" id='survey-cancel-button'>Cancel</button>
+                    <input type='submit'  class='btn btn-primary right-float' value="SAVE" id='survey-submit-button'>
+                    <button class='btn btn-secondary right-float' onclick="location.href = 'HomePage.jsp'; $('.add-survey-alert').hide();" id='survey-cancel-button'>Cancel</button>
                     <div class="clear"></div>
                 </div>
             </div>
         </form>
 
 
-        <script type='text/javascript' src='js\jQuery.js'></script>
+        
         <script type='text/javascript' src='js\popper.js'></script>
         <script type='text/javascript' src='js\bootstrap.js'></script>
         <script type="text/javascript" src="js\AddSurvey.js"></script>

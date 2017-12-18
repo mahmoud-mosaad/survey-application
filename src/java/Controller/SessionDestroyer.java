@@ -11,6 +11,7 @@ public class SessionDestroyer implements HttpSessionListener{
     @Override
     public void sessionCreated(HttpSessionEvent se) {
             System.out.print("session created-----------------------------------");
+            se.getSession().setMaxInactiveInterval(60*60);
 
     }
 

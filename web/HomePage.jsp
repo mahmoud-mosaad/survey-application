@@ -86,8 +86,8 @@
                             <table>
 
                                 <tr style="text-align: center;">
-                                    <th>survey Name</th>
-                                    <th>spam count</th>
+                                    <th style="padding: 0px 12px;">survey Name</th>
+                                    <th style="padding: 0px 12px;">spam count</th>
                                 </tr>
 
                                 <%
@@ -97,14 +97,14 @@
                                 %>
 
                                 <tr>
-                                    <th>
+                                    <th style="padding: 0px 12px;">
                                         <form action="Survey.jsp?spammedSurveyNumber=<%= ii%>" method="POST">
                                             <input class='dropdown-item' type="submit" data-surveyid="<%= spamSurveys.get(ii).getSurveyID()%>" value="<%=survey.getName()%>"/>   
                                             <input name='surveyID-<%= ii%>' value="<%= spamSurveys.get(ii).getSurveyID()%>" type="text" hidden="true"/>
                                             
                                         </form>
                                     </th>
-                                    <th style="text-align: center;"><%= spamSurveys.get(ii).getSpamCount()%></th>
+                                    <th style="text-align: center; padding: 0px 12px;"><%= spamSurveys.get(ii).getSpamCount()%></th>
                                 </tr>
 
 
@@ -160,8 +160,10 @@
                         </div>
                     </div>
                     <div class="modal fade" id="survey-model-<%= i%>"  tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        
                         <div class="modal-dialog" role="document">
                             <div class="modal-content">
+                                <div class="alert alert-danger survey-form-error-<%= i%>" hidden="true">Can't submit empty survey</div>
                                 <div class="modal-header">
                                     <h5 class="modal-title" id="exampleModalLabel"><%= surveys.get(i).getName()%></h5>
                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -217,14 +219,7 @@
                                                 SurveyAnswers SACheck = new SurveyAnswers();
                                                 ArrayList<String> checks = new ArrayList<String>(); 
                                                 checks  = SACheck.getCheckBoxes(currentUser.getId(),surveys.get(i).getCheckboxQuestions().get(j).getId());
-                                        
-                                                
-//                                                       for(int yy=0 ; yy<checks.size() ; yy++)
-//                                                       {
-//                                                          String g = checks.get(yy); 
-//                                                          out.print(g);
-//                                                       }
-                                                   
+                 
                                         %>
                                         <div class="alert alert-primary checkbox-<%= i%> checkbox-parent-question-<%= i%>-<%= j%>" data-questionid="<%= surveys.get(i).getCheckboxQuestions().get(j).getId()%>">
                                             <div style="font-weight: bold;" ><%= surveys.get(i).getCheckboxQuestions().get(j).getValue()%></div>
@@ -316,12 +311,12 @@
                                                 
                                             %>
                                             
-                                            <input type="submit" class="btn btn-primary" data-surveyid="<%= surveys.get(i).getId()%>" name="anonymous-<%= i%>" id="submit-survey-abutton-<%= i%>"  value="As lik Annonynas" style="cursor: pointer;box-shadow: none; border-radius: 0px; margin: 0px;">
-                                            <input type="submit" class="btn btn-primary" data-surveyid="<%= surveys.get(i).getId()%>" name="submit-<%= i%>" id="submit-survey-button-<%= i%>"  value="Submit" style="cursor: pointer;box-shadow: none; border-radius: 0px; margin: 0px;">
+                                            <input type="submit" disabled="true" class="btn btn-primary" data-surveyid="<%= surveys.get(i).getId()%>" name="anonymous-<%= i%>" id="submit-survey-abutton-<%= i%>"  value="As Annonynas" style="cursor: pointer;box-shadow: none; border-radius: 0px; margin: 0px;">
+                                            <input type="submit" disabled="true" class="btn btn-primary" data-surveyid="<%= surveys.get(i).getId()%>" name="submit-<%= i%>" id="submit-survey-button-<%= i%>"  value="Submit" style="cursor: pointer;box-shadow: none; border-radius: 0px; margin: 0px;">
                                             <%}else{%>
                                             
-                                            <input type="submit" class="btn btn-primary" data-surveyid="<%= surveys.get(i).getId()%>" name="anonymous-<%= i%>" id="submit-survey-abutton-<%= i%>"  onmouseenter="submitAnswer('<%= i%>')" value="As Annonynas" style="cursor: pointer;box-shadow: none; border-radius: 0px; margin: 0px;">
-                                            <input type="submit" class="btn btn-primary" data-surveyid="<%= surveys.get(i).getId()%>" id="submit-survey-button-<%= i%>" name="update-<%= i%>" onmouseenter="submitAnswer('<%= i%>')"  value="Update" style="cursor: pointer;box-shadow: none; border-radius: 0px; margin: 0px;">
+                                            <input type="submit" disabled="true"  class="btn btn-primary" data-surveyid="<%= surveys.get(i).getId()%>" name="anonymous-<%= i%>" id="submit-survey-abutton-<%= i%>"  onmouseenter="submitAnswer('<%= i%>')" value="As Annonynas" style="cursor: pointer;box-shadow: none; border-radius: 0px; margin: 0px;">
+                                            <input type="submit" disabled="true"  class="btn btn-primary" data-surveyid="<%= surveys.get(i).getId()%>" id="submit-survey-button-<%= i%>" name="update-<%= i%>" onmouseenter="submitAnswer('<%= i%>')"  value="Update" style="cursor: pointer;box-shadow: none; border-radius: 0px; margin: 0px;">
                                             <%}}%>
                                         </div>
 

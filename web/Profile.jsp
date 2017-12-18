@@ -77,8 +77,8 @@
                             <table>
 
                                 <tr style="text-align: center;">
-                                    <th>survey Name</th>
-                                    <th>spam count</th>
+                                    <th style="padding: 0px 12px;">survey Name</th>
+                                    <th style="padding: 0px 12px;">spam count</th>
                                 </tr>
 
                                 <%
@@ -88,7 +88,7 @@
                                 %>
 
                                 <tr>
-                                    <th>
+                                    <th style="padding: 0px 12px;">
                                         <form action="Survey.jsp?spammedSurveyNumber=<%= ii%>" method="POST">
                                             <input class='dropdown-item' type="submit" data-surveyid="<%= spamSurveys.get(ii).getSurveyID()%>" value="<%=survey.getName()%>"/>   
                                             <input name='surveyID-<%= ii%>' value="<%= spamSurveys.get(ii).getSurveyID()%>" type="text" hidden="true"/>
@@ -96,7 +96,7 @@
                                             <input name='useridd-<%= ii%>' value="<%= currentUser.getId()%>" type="text" hidden="true"/>
                                         </form>
                                     </th>
-                                    <th style="text-align: center;"><%= spamSurveys.get(ii).getSpamCount()%></th>
+                                    <th style="text-align: center; padding: 0px 12px;"><%= spamSurveys.get(ii).getSpamCount()%></th>
                                 </tr>
 
 

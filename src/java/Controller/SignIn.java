@@ -54,7 +54,7 @@ public class SignIn extends HttpServlet {
             if (user.getEmail().equals(userEmail) && user.getPassword().equals(userPassword)) {
                 HttpSession session = request.getSession(true);
                 session.setAttribute("currentUser", user);
-                session.setMaxInactiveInterval(60*60);
+//                session.setMaxInactiveInterval(60);
                 user.changeState(userEmail, 1);
                 response.sendRedirect("HomePage.jsp");
 

@@ -109,13 +109,13 @@ function submitAnswer($id)
     var mcq = String($('.mcq-' + $id).length);
     var freeanswer = String($('.freeAnswer-' + $id).length);
     var checkbox = String($('.checkbox-' + $id).length);
-    console.log(mcq);
-    console.log(freeanswer);
-    console.log(checkbox);
+    var r=0 , f=0 , c=0 , ccc=0;
     
     for (j = 0; j < $('.mcq-' + $id).length; j++) {
         var mcq_questionID = $('.mcq-parent-question-' + $id+'-'+j).data('questionid');
         var v = $('input[name=mcq-answer-' + $id + '-' + j + ']:checked', '.mcq-' + $id).val();
+        if(v === undefined){r++;}
+        
         v = mcq_questionID + "~" + v;
         $('#mcq-answer-value-' + $id + '-' + j).attr('value', v);
     }
@@ -129,7 +129,9 @@ function submitAnswer($id)
         for(o=0 ; o<v  ; o++)
         {
             var checked = $('#checkbox-answer-'+$id+'-'+j+'-'+o +':checked').val();
+            if(checked === undefined){c++;}
             cc = cc+checked;
+            ccc++;
             if(o!=v-1){cc+='~';}
             
         }
@@ -140,11 +142,20 @@ function submitAnswer($id)
     for (j = 0; j < $('.freeAnswer-' + $id).length; j++) {
         var free_questionID = $('.freeanswer-parent-question-' + $id+'-'+j).data('questionid');
         var v = $('#freeanswer-answer-value0-'+$id+'-'+j).val();
+        if(v === ""){f++;}
         v = free_questionID + "~" + v;
         console.log("----------"+v);
         $('#freeanswer-answer-value-' + $id + '-' + j).attr('value', v);
     }
-    
+   
+   if(mcq==r && freeanswer==f && ccc==c){
+        $("#submit-survey-abutton-"+$id).attr("disabled","true");
+        $("#submit-survey-button-"+$id).attr("disabled","true");
+   }else
+   {
+       $("#submit-survey-abutton-"+$id).removeAttr("disabled");
+        $("#submit-survey-button-"+$id).removeAttr("disabled");
+   }
     
     $('.mcqHidden-' + $id).attr('value', mcq);
     $('.checkBoxHidden-' + $id).attr('value', checkbox);

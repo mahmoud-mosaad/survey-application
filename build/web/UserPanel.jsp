@@ -55,7 +55,7 @@
 
                     <li class='nav-item active'>
 
-                        <a class='nav-link' data-toggle="tooltip" title="my Panel" href='UserPanel.jsp'>My Panel</a>
+                        <a class='nav-link' data-toggle="tooltip" title="my Panel" href='UserPanel.jsp' style="color: #007bff;">My Panel</a>
                     </li>
                     <%
                         if (currentUser.getType() == 1) {
@@ -79,8 +79,8 @@
                             <table>
 
                                 <tr style="text-align: center;">
-                                    <th>survey Name</th>
-                                    <th>spam count</th>
+                                    <th style="padding: 0px 12px;">survey Name</th>
+                                    <th style="padding: 0px 12px;">spam count</th>
                                 </tr>
 
                                 <%
@@ -90,14 +90,14 @@
                                 %>
 
                                 <tr>
-                                    <th>
+                                    <th style="padding: 0px 12px;">
                                         <form action="Survey.jsp?spammedSurveyNumber=<%= ii%>" method="POST">
                                             <input class='dropdown-item' type="submit" data-surveyid="<%= spamSurveys.get(ii).getSurveyID()%>" value="<%=survey.getName()%>"/>   
                                             <input name='surveyID-<%= ii%>' value="<%= spamSurveys.get(ii).getSurveyID()%>" type="text" hidden="true"/>
 
                                         </form>
                                     </th>
-                                    <th style="text-align: center;"><%= spamSurveys.get(ii).getSpamCount()%></th>
+                                    <th style="text-align: center; padding: 0px 12px;"><%= spamSurveys.get(ii).getSpamCount()%></th>
                                 </tr>
 
 
@@ -204,10 +204,7 @@
                                     }
                                 }%>
 
-                        </table>
-                        <!--<img src="http://via.placeholder.com/500x150" class="img" style="vertical-align: top;">-->
-                        <!--<div class="padding display-inline"></div>-->
-                        
+                        </table>                        
                         <div id="chart_div_<%= i%>" style="display:inline"></div>
                         
                     </div>
@@ -218,8 +215,6 @@
                 }%>
 
         </div>
-
-
         <%}
             }%>
 
